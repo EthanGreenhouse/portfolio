@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ethan Greenhouse - Laser Maze Game</title>
+  <meta name="description" content="Interactive laser puzzle game built for Boston Children's Museum, combining Arduino firmware, 3D-printed hardware, and a custom enclosure." />
+  <link rel="canonical" href="https://ethangreenhouse.com/projects/laser-maze.html" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ethangreenhouse.com/projects/laser-maze.html" />
+  <meta property="og:title" content="Laser Maze Game — Ethan Greenhouse" />
+  <meta property="og:description" content="Interactive laser puzzle game built for Boston Children's Museum, combining Arduino firmware, 3D-printed hardware, and a custom enclosure." />
+  <meta property="og:image" content="https://ethangreenhouse.com/images/og-image.png" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Laser Maze Game — Ethan Greenhouse" />
+  <meta name="twitter:description" content="Interactive laser puzzle game built for Boston Children's Museum, combining Arduino firmware, 3D-printed hardware, and a custom enclosure." />
+  <meta name="twitter:image" content="https://ethangreenhouse.com/images/og-image.png" />
+
+  <link rel="icon" type="image/png" href="../images/favicon.png" />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="../project.css" />
+</head>
+<body>
+
+  <nav>
+    <a href="../index.html" class="nav-name">Ethan Greenhouse</a>
+    <ul>
+      <li><a href="https://docs.google.com/document/d/1gsTAR54jjcMOcOAFtvFZfDNUDUgtQ1KB/edit?usp=sharing&ouid=106134167172094507117&rtpof=true&sd=true" target="_blank">Resume</a></li>
+      <li><a href="https://www.linkedin.com/in/ethangreenhouse/" target="_blank">LinkedIn</a></li>
+      <li><a href="https://github.com/EthanGreenhouse" target="_blank">GitHub</a></li>
+    </ul>
+  </nav>
+
+  <main class="project-page">
+
+    <a href="../index.html#projects" class="back-link">← Back to Projects</a>
+
+    <header class="project-header">
+      <h1>Laser Maze Game</h1>
+      <p class="project-date">January 2025 – April 2025</p>
+      <ul class="tags">
+        <li>Arduino</li>
+        <li>C++</li>
+        <li>SolidWorks</li>
+        <li>AutoCAD</li>
+        <li>3D Printing</li>
+      </ul>
+    </header>
+
+    <div class="project-hero-img">
+      <img src="../images/laser-maze-team.jpg" alt="Team Laser at the Boston Children's Museum" />
+    </div>
+
+    <section class="project-section">
+      <h2>Overview</h2>
+      <p>
+        Laser Vision Maze is an interactive puzzle game built for Boston Children's Museum as part of
+        a 12-week team project with Andre Chung and Kevin Chin. Players place adjustable mirrors on
+        a pegboard to redirect a laser beam through the maze and hit a hidden photoresistor target,
+        which triggers an LED celebration when struck.
+      </p>
+      <p>
+        My contributions covered the full enclosure (designed in AutoCAD, laser cut, assembled, and
+        painted), the seven 3D-printed mirror stands (designed in SolidWorks), and the Arduino firmware
+        that handles laser detection.
+      </p>
+    </section>
+
+    <section class="project-section">
+      <h2>Enclosure</h2>
+      <p>
+        The maze, wiring channel, and laser housing were designed in AutoCAD and laser cut from MDF,
+        then painted matte black to reduce light reflection inside the play area. The pegboard floor
+        has a grid of holes with embedded magnets that hold the mirror stands in place, letting players
+        snap mirrors into any position quickly. Aligning the target and laser holes across the assembled
+        panels was the trickiest part. Wood warping after painting threw off some of the alignment and
+        is something I'd address in a future revision with a more dimensionally stable material.
+      </p>
+      <div class="project-img">
+        <img src="../images/laser-maze-enclosure.jpg" alt="Laser-cut MDF maze enclosure painted matte black" />
+      </div>
+    </section>
+
+    <section class="project-section">
+      <h2>Mirror Stands</h2>
+      <p>
+        Seven mirror stands were designed in SolidWorks and 3D printed in PLA. Each stand holds a small
+        glass mirror at a fixed angle and has a magnetic base that snaps into the pegboard holes. The
+        snap-in design made it easy for young visitors to reposition mirrors without needing to align
+        them manually, which kept gameplay moving.
+      </p>
+      <div class="project-img">
+        <img src="../images/laser-maze-solidworks.jpg" alt="SolidWorks model of the 3D-printed mirror stand" />
+      </div>
+    </section>
+
+    <section class="project-section">
+      <h2>Firmware</h2>
+      <p>
+        The detection system runs on an Arduino RedBoard reading four photoresistors. Each photoresistor
+        sits behind the target, and the firmware continuously compares their readings against a calibrated
+        ambient light threshold. When the laser hits any of them, the value crosses the threshold and an
+        LED indicator lights up. Detection response time is under 100 ms, fast enough to feel instant to
+        the player. The threshold calibration was important because the museum's ambient lighting was
+        much brighter than our development environment, and an uncalibrated threshold caused false
+        positives during early testing.
+      </p>
+      <div class="project-img">
+        <img src="../images/laser-maze-flowchart.jpg" alt="Detection logic flowchart" />
+      </div>
+    </section>
+
+    <section class="project-section">
+      <h2>Museum Deployment</h2>
+      <p>
+        The game ran at Boston Children's Museum and was played by 63 visitors over the testing window.
+        Watching kids problem-solve with the mirrors was the best part, especially when they figured
+        out unexpected solutions using more mirrors than necessary.
+      </p>
+      <div class="project-img">
+        <img src="../images/laser-maze-gameplay.jpg" alt="Mirror stands and laser beam on the maze board" />
+      </div>
+    </section>
+
+    <section class="project-section">
+      <h2>Results</h2>
+      <p>
+        Across 63 players, 88.9% successfully completed the maze, using an average of 2.29 mirrors per
+        attempt. The completion rate suggests the difficulty was well balanced for the target age group.
+      </p>
+      <div class="project-img-row">
+        <div class="project-img">
+          <img src="../images/laser-maze-completion.jpg" alt="Completion rate pie chart: 88.9% successful" />
+        </div>
+        <div class="project-img">
+          <img src="../images/laser-maze-mirrors.jpg" alt="Distribution of effective mirrors used per attempt" />
+        </div>
+      </div>
+      <p>
+        The main improvement areas were durability and warping over the deployment period, and average
+        play time running longer than ideal which created wait lines. A more rigid enclosure material
+        and a slightly smaller maze grid would address both in a future iteration.
+      </p>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Ethan Greenhouse · <a href="mailto:greenhouse.e@northeastern.edu">greenhouse.e@northeastern.edu</a></p>
+  </footer>
+
+</body>
+</html>

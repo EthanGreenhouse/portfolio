@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ethan Greenhouse - ECG Signal Processing System</title>
+  <meta name="description" content="Analog front-end with cascaded filters and instrumentation amplifier achieving 70.5 dB CMRR, with MATLAB heart rate extraction." />
+  <link rel="canonical" href="https://ethangreenhouse.com/projects/ecg-signal-processing.html" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ethangreenhouse.com/projects/ecg-signal-processing.html" />
+  <meta property="og:title" content="ECG Signal Processing System — Ethan Greenhouse" />
+  <meta property="og:description" content="Analog front-end with cascaded filters and instrumentation amplifier achieving 70.5 dB CMRR, with MATLAB heart rate extraction." />
+  <meta property="og:image" content="https://ethangreenhouse.com/images/og-image.png" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ECG Signal Processing System — Ethan Greenhouse" />
+  <meta name="twitter:description" content="Analog front-end with cascaded filters and instrumentation amplifier achieving 70.5 dB CMRR, with MATLAB heart rate extraction." />
+  <meta name="twitter:image" content="https://ethangreenhouse.com/images/og-image.png" />
+
+  <link rel="icon" type="image/png" href="../images/favicon.png" />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="../project.css" />
+</head>
+<body>
+
+  <nav>
+    <a href="../index.html" class="nav-name">Ethan Greenhouse</a>
+    <ul>
+      <li><a href="https://docs.google.com/document/d/1gsTAR54jjcMOcOAFtvFZfDNUDUgtQ1KB/edit?usp=sharing&ouid=106134167172094507117&rtpof=true&sd=true" target="_blank">Resume</a></li>
+      <li><a href="https://www.linkedin.com/in/ethangreenhouse/" target="_blank">LinkedIn</a></li>
+      <li><a href="https://github.com/EthanGreenhouse" target="_blank">GitHub</a></li>
+    </ul>
+  </nav>
+
+  <main class="project-page">
+
+    <a href="../index.html#projects" class="back-link">← Back to Projects</a>
+
+    <header class="project-header">
+      <h1>ECG Signal Processing System</h1>
+      <p class="project-date">November 2025 – December 2025</p>
+      <ul class="tags">
+        <li>Analog Design</li>
+        <li>MATLAB</li>
+        <li>Signal Processing</li>
+      </ul>
+    </header>
+
+    <div class="project-hero-img">
+      <img src="../images/ecg-breadboard.jpg" alt="ECG circuit on breadboard connected to NI USB-6001 ADC" />
+    </div>
+
+    <section class="project-section">
+      <h2>Overview</h2>
+      <p>
+        A complete ECG acquisition system that takes millivolt-scale signals from chest electrodes
+        and turns them into a clean heart rate reading. Built over two lab cycles, the system runs
+        from electrodes through an instrumentation amplifier, a cascaded analog filter chain, and a
+        14-bit ADC into MATLAB for R-peak detection.
+      </p>
+    </section>
+
+    <section class="project-section">
+      <h2>The Problem</h2>
+      <p>
+        ECG signals from the skin are only a few millivolts. They sit underneath much larger noise
+        sources: 60 Hz power line hum, DC offsets from electrode-skin chemistry, muscle artifacts,
+        and high-frequency noise that would alias into the signal band during sampling. The system
+        has to amplify what you want while rejecting everything else, and it has to do it in the
+        right order before any digital conversion happens.
+      </p>
+    </section>
+
+    <section class="project-section">
+      <h2>Instrumentation Amplifier</h2>
+      <p>
+        The front end is an AD627 instrumentation amplifier with a 10 kΩ gain resistor, giving a
+        theoretical gain of 25. It runs on dual 1.5 V AA batteries to keep it isolated from AC mains
+        noise, with 0.1 µF decoupling capacitors on both rails. Measured differential gain came in
+        at 21.5, slightly under theoretical due to component tolerances and breadboard contact
+        resistance.
+      </p>
+      <p>
+        Common mode rejection is what really matters for ECG. I tested it by feeding a 500 mV sine
+        wave into both inputs at the same time and measuring the residual output of 3.2 mV. That
+        gave a measured CMRR of 70.5 dB. The AD627 datasheet specs 80 to 85 dB, so there was some
+        margin lost to electrode impedance mismatch and breadboard layout, but it was still more
+        than enough to pull a clean QRS complex out of ambient noise.
+      </p>
+    </section>
+
+    <section class="project-section">
+      <h2>Filter Chain</h2>
+      <p>
+        Two filter stages clean up the AD627 output before digitization, both built on halves of an
+        LT1490 dual op-amp.
+      </p>
+      <p>
+        The high-pass filter has a 0.106 Hz cutoff. That is deliberately far below the lowest ECG
+        frequencies of interest, so it strips out slow DC offsets from the electrodes without
+        touching the signal. The low-pass filter has a 159 Hz cutoff and acts as the anti-aliasing
+        filter. ECG content sits below 150 Hz, but anything above 500 Hz would fold back into the
+        signal band during sampling and corrupt the data permanently. Total system gain through all
+        three stages comes out to 18.
+      </p>
+    </section>
+
+    <section class="project-section">
+      <h2>Digital Acquisition</h2>
+      <p>
+        The filtered signal goes into a NI USB-6001 ADC sampling at 1 kHz, well above the Nyquist
+        requirement for the 159 Hz LPF cutoff. The 14-bit converter resolves to about 1.22 mV per
+        level, more than enough headroom for the amplified ECG. From there MATLAB's findpeaks
+        identifies the R-waves (the tallest peak in each heartbeat) and the average R-to-R interval
+        gives heart rate in BPM.
+      </p>
+      <div class="project-img">
+        <img src="../images/ecg-signal-plots.jpg" alt="MATLAB plots showing ECG voltage at A/D and at electrodes" />
+      </div>
+    </section>
+
+    <section class="project-section">
+      <h2>Results</h2>
+      <p>
+        I recorded five 10-second clips under different conditions to validate the system:
+      </p>
+      <ul>
+        <li>Resting: 72 BPM</li>
+        <li>Different subject, resting: 65 BPM</li>
+        <li>After running: 95 BPM</li>
+        <li>Deep breathing: 68 BPM</li>
+        <li>Slow movement: ~100 mV of baseline drift</li>
+      </ul>
+      <p>
+        The exercise clip showed the expected elevated heart rate, and the movement clip confirmed
+        the HPF was doing its job by attenuating most of the low-frequency drift. R-peak detection
+        ran cleanly across all five clips. The post-exercise recording was measured at 91.9 BPM in
+        MATLAB.
+      </p>
+      <div class="project-img">
+        <img src="../images/ecg-rpeaks.jpg" alt="MATLAB plot of ECG with detected R-peaks at 91.9 BPM" />
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Ethan Greenhouse · <a href="mailto:greenhouse.e@northeastern.edu">greenhouse.e@northeastern.edu</a></p>
+  </footer>
+
+</body>
+</html>

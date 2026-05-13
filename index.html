@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ethan Greenhouse — Electrical Engineering Portfolio</title>
+  <meta name="description" content="Electrical Engineering student at Northeastern University. Portfolio of PCB design, embedded firmware, and analog projects." />
+  <link rel="canonical" href="https://ethangreenhouse.com/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ethangreenhouse.com/" />
+  <meta property="og:title" content="Ethan Greenhouse — Electrical Engineering Portfolio" />
+  <meta property="og:description" content="Electrical Engineering student at Northeastern University. Portfolio of PCB design, embedded firmware, and analog projects." />
+  <meta property="og:image" content="https://ethangreenhouse.com/images/og-image.png" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://ethangreenhouse.com/" />
+  <meta name="twitter:title" content="Ethan Greenhouse — Electrical Engineering Portfolio" />
+  <meta name="twitter:description" content="Electrical Engineering student at Northeastern University. Portfolio of PCB design, embedded firmware, and analog projects." />
+  <meta name="twitter:image" content="https://ethangreenhouse.com/images/og-image.png" />
+
+  <link rel="icon" type="image/png" href="images/favicon.png" />
+  <link rel="stylesheet" href="style.css" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Ethan Greenhouse",
+    "url": "https://ethangreenhouse.com/",
+    "image": "https://ethangreenhouse.com/images/profile.jpg",
+    "jobTitle": "Electrical Engineering Student",
+    "email": "greenhouse.e@northeastern.edu",
+    "alumniOf": {
+      "@type": "CollegeOrUniversity",
+      "name": "Northeastern University"
+    },
+    "sameAs": [
+      "https://www.linkedin.com/in/ethangreenhouse/",
+      "https://github.com/EthanGreenhouse"
+    ],
+    "knowsAbout": [
+      "PCB Design",
+      "Embedded Firmware",
+      "Analog Circuit Design",
+      "Signal Processing",
+      "KiCad",
+      "SolidWorks",
+      "C++",
+      "MATLAB"
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <span class="nav-name">Ethan Greenhouse</span>
+    <ul>
+      <li><a href="https://docs.google.com/document/d/1gsTAR54jjcMOcOAFtvFZfDNUDUgtQ1KB/edit?usp=sharing&ouid=106134167172094507117&rtpof=true&sd=true" target="_blank">Resume</a></li>
+      <li><a href="https://www.linkedin.com/in/ethangreenhouse/" target="_blank">LinkedIn</a></li>
+      <li><a href="https://github.com/EthanGreenhouse" target="_blank">GitHub</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1>Ethan Greenhouse</h1>
+        <p class="tagline">Electrical Engineering Student · Northeastern University · Class of 2028</p>
+        <p class="bio">
+          Electrical Engineering student at Northeastern University with a focus on PCB design and power electronics. Currently on co-op at AvtechTyee as a Quality Engineer, working on machine vision inspection systems and machine learning supplier quality analytics in an AS9100 aerospace environment.
+        </p>
+        <a href="#projects" class="btn">View My Work</a>
+      </div>
+      <div class="hero-photo">
+        <img src="images/profile.jpg" alt="Ethan Greenhouse" />
+      </div>
+    </div>
+    <div class="scroll-hint">
+      <span>Projects</span>
+      <div class="arrow">↓</div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <h2>Projects</h2>
+    <div class="project-grid">
+
+      <a href="projects/eink-weather-station.html" class="card">
+        <div class="card-thumb card-thumb-soon">
+          <span>Coming Soon</span>
+        </div>
+        <div class="card-body">
+          <h3>E-Ink Weather Station</h3>
+          <p>ESP32-based PCB driving a 4.2" e-paper display with live weather data over WiFi, with a complete USB-C to 3.3V power path.</p>
+          <ul class="tags">
+            <li>KiCad</li>
+            <li>ESP32</li>
+            <li>PCB Design</li>
+            <li>Firmware</li>
+          </ul>
+        </div>
+      </a>
+
+      <a href="projects/ecg-signal-processing.html" class="card">
+        <div class="card-thumb">
+          <img src="images/ecg-breadboard.jpg" alt="ECG breadboard circuit" />
+        </div>
+        <div class="card-body">
+          <h3>ECG Signal Processing System</h3>
+          <p>Analog front-end with cascaded filters and instrumentation amplifier achieving 70.5 dB CMRR, with MATLAB heart rate extraction.</p>
+          <ul class="tags">
+            <li>Analog Design</li>
+            <li>MATLAB</li>
+            <li>Signal Processing</li>
+          </ul>
+        </div>
+      </a>
+
+      <a href="projects/rocket-avionics.html" class="card">
+        <div class="card-thumb card-thumb-code">
+<pre><span class="cc">// Read 14 bytes from IMU over I2C</span>
+Wire.beginTransmission(IMU_ADDR);
+Wire.write(ACCEL_XOUT_H);
+Wire.requestFrom(IMU_ADDR, 14);
+
+accel[0] = (buf[0] &lt;&lt; 8) | buf[1];
+accel[1] = (buf[2] &lt;&lt; 8) | buf[3];
+accel[2] = (buf[4] &lt;&lt; 8) | buf[5];</pre>
+        </div>
+        <div class="card-body">
+          <h3>Rocket Avionics Firmware</h3>
+          <p>Embedded C++ firmware for flight control and data acquisition on a custom PCB, with I2C IMU and SPI flash drivers for flight phase detection.</p>
+          <ul class="tags">
+            <li>Embedded C++</li>
+            <li>I2C</li>
+            <li>SPI</li>
+          </ul>
+        </div>
+      </a>
+
+      <a href="projects/laser-maze.html" class="card">
+        <div class="card-thumb">
+          <img src="images/laser-maze-team.jpg" alt="Team Laser at Boston Children's Museum" style="object-position: center top;" />
+        </div>
+        <div class="card-body">
+          <h3>Laser Maze Game</h3>
+          <p>Interactive laser puzzle game built for Boston Children's Museum, serving 100+ visitors. Combines Arduino firmware, 3D-printed hardware, and a custom enclosure.</p>
+          <ul class="tags">
+            <li>Arduino</li>
+            <li>SolidWorks</li>
+            <li>AutoCAD</li>
+            <li>3D Printing</li>
+          </ul>
+        </div>
+      </a>
+
+      <a href="projects/pulse-nfc.html" class="card">
+        <div class="card-thumb">
+          <img src="images/pulse-hero.jpg" alt="Pulse metal NFC business card" style="object-position: center 62%;" />
+        </div>
+        <div class="card-body">
+          <h3>Pulse: Metal NFC Business Card</h3>
+          <p>Custom aluminum NFC business cards with laser engraving and a ferrite layer achieving 100% read reliability despite metal interference.</p>
+          <ul class="tags">
+            <li>NFC</li>
+            <li>AutoCAD</li>
+            <li>Laser Engraving</li>
+          </ul>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Ethan Greenhouse · <a href="mailto:greenhouse.e@northeastern.edu">greenhouse.e@northeastern.edu</a></p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ethan Greenhouse - Pulse: Metal NFC Business Card</title>
+  <meta name="description" content="Custom aluminum NFC business cards with laser engraving and a ferrite layer achieving 100% read reliability despite metal interference." />
+  <link rel="canonical" href="https://ethangreenhouse.com/projects/pulse-nfc.html" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ethangreenhouse.com/projects/pulse-nfc.html" />
+  <meta property="og:title" content="Pulse: Metal NFC Business Card — Ethan Greenhouse" />
+  <meta property="og:description" content="Custom aluminum NFC business cards with laser engraving and a ferrite layer achieving 100% read reliability despite metal interference." />
+  <meta property="og:image" content="https://ethangreenhouse.com/images/og-image.png" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Pulse: Metal NFC Business Card — Ethan Greenhouse" />
+  <meta name="twitter:description" content="Custom aluminum NFC business cards with laser engraving and a ferrite layer achieving 100% read reliability despite metal interference." />
+  <meta name="twitter:image" content="https://ethangreenhouse.com/images/og-image.png" />
+
+  <link rel="icon" type="image/png" href="../images/favicon.png" />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="../project.css" />
+</head>
+<body>
+
+  <nav>
+    <a href="../index.html" class="nav-name">Ethan Greenhouse</a>
+    <ul>
+      <li><a href="https://docs.google.com/document/d/1gsTAR54jjcMOcOAFtvFZfDNUDUgtQ1KB/edit?usp=sharing&ouid=106134167172094507117&rtpof=true&sd=true" target="_blank">Resume</a></li>
+      <li><a href="https://www.linkedin.com/in/ethangreenhouse/" target="_blank">LinkedIn</a></li>
+      <li><a href="https://github.com/EthanGreenhouse" target="_blank">GitHub</a></li>
+    </ul>
+  </nav>
+
+  <main class="project-page">
+
+    <a href="../index.html#projects" class="back-link">← Back to Projects</a>
+
+    <header class="project-header">
+      <h1>Pulse: Metal NFC Business Card</h1>
+      <p class="project-date">October 2024 – December 2024</p>
+      <ul class="tags">
+        <li>NFC</li>
+        <li>AutoCAD</li>
+        <li>Laser Engraving</li>
+      </ul>
+    </header>
+
+    <div class="project-hero-img">
+      <img src="../images/pulse-hero.jpg" alt="Pulse metal NFC business card" />
+    </div>
+
+    <section class="project-section">
+      <h2>Overview</h2>
+      <p>
+        Pulse is a custom metal NFC business card that shares contact information instantly when tapped
+        with a smartphone. No app needed. The card is laser engraved from anodized aluminum and embeds
+        an NFC sticker with a ferrite isolation layer to achieve reliable read performance through a
+        metal substrate.
+      </p>
+    </section>
+
+    <section class="project-section">
+      <h2>The Problem with NFC on Metal</h2>
+      <p>
+        NFC relies on inductive coupling between the reader and the card's antenna. Metal surfaces
+        interfere with this by generating eddy currents that cancel the magnetic field before it reaches
+        the antenna. Placing an NFC sticker directly on aluminum makes it nearly unreadable.
+      </p>
+      <p>
+        The fix was adding a ferrite sheet between the sticker and the aluminum. Ferrite is magnetically
+        permeable but electrically resistive, so it directs the field through the antenna while blocking
+        eddy currents in the metal beneath. Getting the right ferrite thickness and sticker spec took
+        three sticker revisions and two material trials before hitting 100% read reliability.
+      </p>
+    </section>
+
+    <section class="project-section">
+      <h2>Design & Fabrication</h2>
+      <p>
+        The layout was designed in AutoCAD at standard credit card dimensions (85.6 × 54mm), featuring
+        a crescent moon motif and clean contact typography. Material selection landed on 0.8mm anodized
+        aluminum with a matte finish. The anodized coating reduces laser reflectivity for cleaner
+        engraving results. Early prototypes had centering issues, which were solved by registering the
+        top-left corner of the card as a fixed reference point in the laser software. The final version
+        went through three full manufacturing cycles to get there.
+      </p>
+    </section>
+
+    <section class="project-section">
+      <h2>Results</h2>
+      <p>
+        The cards read reliably on both Android and iOS without any additional app. This is a first
+        iteration. Next steps include two-sided engraving and a thinner custom-cut ferrite layer to
+        reduce overall card thickness.
+      </p>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Ethan Greenhouse · <a href="mailto:greenhouse.e@northeastern.edu">greenhouse.e@northeastern.edu</a></p>
+  </footer>
+
+</body>
+</html>

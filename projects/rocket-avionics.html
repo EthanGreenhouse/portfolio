@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ethan Greenhouse -   Rocket Avionics Firmware</title>
+  <meta name="description" content="Embedded C++ firmware for flight control and data acquisition on a custom PCB, with I2C IMU and SPI flash drivers." />
+  <link rel="canonical" href="https://ethangreenhouse.com/projects/rocket-avionics.html" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ethangreenhouse.com/projects/rocket-avionics.html" />
+  <meta property="og:title" content="Rocket Avionics Firmware — Ethan Greenhouse" />
+  <meta property="og:description" content="Embedded C++ firmware for flight control and data acquisition on a custom PCB, with I2C IMU and SPI flash drivers." />
+  <meta property="og:image" content="https://ethangreenhouse.com/images/og-image.png" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Rocket Avionics Firmware — Ethan Greenhouse" />
+  <meta name="twitter:description" content="Embedded C++ firmware for flight control and data acquisition on a custom PCB, with I2C IMU and SPI flash drivers." />
+  <meta name="twitter:image" content="https://ethangreenhouse.com/images/og-image.png" />
+
+  <link rel="icon" type="image/png" href="../images/favicon.png" />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="../project.css" />
+</head>
+<body>
+
+  <nav>
+    <a href="../index.html" class="nav-name">Ethan Greenhouse</a>
+    <ul>
+      <li><a href="https://docs.google.com/document/d/1gsTAR54jjcMOcOAFtvFZfDNUDUgtQ1KB/edit?usp=sharing&ouid=106134167172094507117&rtpof=true&sd=true" target="_blank">Resume</a></li>
+      <li><a href="https://www.linkedin.com/in/ethangreenhouse/" target="_blank">LinkedIn</a></li>
+      <li><a href="https://github.com/EthanGreenhouse" target="_blank">GitHub</a></li>
+    </ul>
+  </nav>
+
+  <main class="project-page">
+
+    <a href="../index.html#projects" class="back-link">← Back to Projects</a>
+
+    <header class="project-header">
+      <h1>Rocket Avionics Firmware</h1>
+      <p class="project-date">September 2025 – November 2025</p>
+      <ul class="tags">
+        <li>Embedded C++</li>
+        <li>I2C</li>
+        <li>SPI</li>
+      </ul>
+    </header>
+
+    <section class="project-section">
+      <h2>Overview</h2>
+      <p>
+        Embedded C++ firmware for a rocket avionics board, written as part of Northeastern's
+        aerospace club. The firmware runs on a custom PCB built around an Adafruit Feather M0 and
+        handles three sensor drivers (IMU, barometer, flash memory), a 50 Hz acquisition loop,
+        filtering and event detection logic for flight phase identification, and on-board logging
+        for post-flight data offload over serial.
+      </p>
+    </section>
+
+    <section class="project-section">
+      <h2>Hardware</h2>
+      <p>
+        The board is built around the Feather M0 (ATSAMD21 microcontroller) with three sensors:
+      </p>
+      <ul>
+        <li><strong>ICM-20602 IMU</strong> over I2C: 3-axis accelerometer and gyroscope, configured for ±16 g and ±2000 dps</li>
+        <li><strong>MS5607 barometer</strong>: pressure and temperature for altitude calculation</li>
+        <li><strong>S25FL512 flash memory</strong> over SPI: 64 MB on-board storage for flight logs</li>
+      </ul>
+    </section>
+
+    <section class="project-section">
+      <h2>IMU Driver</h2>
+      <p>
+        The IMU driver talks to the ICM-20602 over I2C at 400 kHz. To read a full sample, the
+        driver writes the accelerometer register address (<code>ACCEL_XOUT_H</code>), then requests
+        14 bytes back in a single transaction: 6 bytes accel, 2 bytes temperature, 6 bytes gyro.
+      </p>
+      <p>
+        The sensor returns each measurement as two separate bytes (high and low). To reconstruct
+        the 16-bit signed values, the driver shifts the high byte left 8 positions and ORs it with
+        the low byte:
+      </p>
+<pre><code>Wire.beginTransmission(ICM20602_ADDR);
+Wire.write(ACCEL_XOUT_H);
+Wire.endTransmission(false);
+Wire.requestFrom(ICM20602_ADDR, (uint8_t)14);
+
+uint8_t buf[14];
+for (int i = 0; i &lt; 14; i++) {
+    buf[i] = Wire.read();
+}
+
+accelData[0] = (int16_t)((buf[0] &lt;&lt; 8) | buf[1]);
+accelData[1] = (int16_t)((buf[2] &lt;&lt; 8) | buf[3]);
+accelData[2] = (int16_t)((buf[4] &lt;&lt; 8) | buf[5]);
+tempRaw      = (int16_t)((buf[6] &lt;&lt; 8) | buf[7]);
+gyroData[0]  = (int16_t)((buf[8] &lt;&lt; 8) | buf[9]);
+gyroData[1]  = (int16_t)((buf[10] &lt;&lt; 8) | buf[11]);
+gyroData[2]  = (int16_t)((buf[12] &lt;&lt; 8) | buf[13]);</code></pre>
+      <p>
+        Reading all seven channels in one transaction is faster than separate reads and keeps the
+        samples time-aligned. After the parse step the raw counts are scaled to m/s² and rad/s
+        using the configured full-scale ranges.
+      </p>
+    </section>
+
+    <section class="project-section">
+      <h2>Flash Logging</h2>
+      <p>
+        The S25FL512 driver handles SPI writes to flash in 512-byte page chunks, with a serial CLI
+        that exposes erase, offload, and print commands for post-flight data recovery. Each log
+        record packs timestamp, pressure, temperature, altitude, velocity, net acceleration, flight
+        state, and min/max values into a fixed struct that gets streamed to flash on every tick.
+      </p>
+    </section>
+
+    <section class="project-section">
+      <h2>Filtering & Event Detection</h2>
+      <p>
+        The biggest challenge wasn't reading the sensors, it was deciding what counted as a real
+        flight event. The IMU is inherently noisy. Raw readings jump around even when the sensor
+        is sitting still on a desk, which means a single sample is never enough to trust.
+      </p>
+      <p>
+        To handle this I used a running average over the last 10 samples. The tricky part was
+        calibrating the window size. Too much smoothing and the system reacts too slowly to catch
+        a real event like motor ignition. Too little and noise spikes trigger false positives. For
+        launch detection specifically, the firmware looks for sustained acceleration above 2 to 3 G
+        for more than 100 ms, so a single noisy spike won't falsely trigger it. Similar threshold
+        and duration windows handle apogee detection (sustained near-zero net acceleration combined
+        with peak altitude) and parachute deployment.
+      </p>
+    </section>
+
+    <section class="project-section">
+      <h2>Main Loop</h2>
+      <p>
+        The main loop runs at 50 Hz, scheduled with a simple <code>tickEndTime</code> guard. Every
+        20 ms it reads all sensors, computes derived values like net acceleration and altitude,
+        packs the result into a log record, runs the CLI handler, and toggles a status LED so the
+        board has visual feedback during ground testing.
+      </p>
+<pre><code>void loop() {
+    while (millis() &lt; tickEndTime) {}
+    tickEndTime = millis() + 20;
+
+    barometer.read();
+    imu.read();
+
+    const float pressurePa = barometer.getPressurePa();
+    const float altitudeM = MS5607::calculateAltitudeM(pressurePa);
+    const Vector3D_s accelerationMSS = imu.getAccelerationsMSS();
+    const float netAccelerationMss = sqrt(
+        accelerationMSS.x * accelerationMSS.x +
+        accelerationMSS.y * accelerationMSS.y +
+        accelerationMSS.z * accelerationMSS.z);
+
+    logData.timestampMs = millis();
+    logData.altitudeM = altitudeM;
+    // ... pack remaining fields and log
+    runCLI();
+}</code></pre>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Ethan Greenhouse · <a href="mailto:greenhouse.e@northeastern.edu">greenhouse.e@northeastern.edu</a></p>
+  </footer>
+
+</body>
+</html>
