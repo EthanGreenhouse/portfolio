@@ -179,6 +179,19 @@
   display: block;
 }
 
+/* Clickable image wrappers (schematics that open full size) — the anchor has to
+   fill the container or the image escapes its height and gets clipped. */
+.project-img > a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Taller container for dense artwork like full schematics */
+.project-img-tall {
+  height: 560px;
+}
+
 /* ── Responsive ── */
 @media (max-width: 680px) {
   .project-page {
@@ -198,6 +211,10 @@
 
   .project-img {
     height: 300px;
+  }
+
+  .project-img-tall {
+    height: 380px;
   }
 
   .project-img-row .project-img {

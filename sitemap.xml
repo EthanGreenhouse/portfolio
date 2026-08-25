@@ -11,6 +11,16 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://ethangreenhouse.com/projects/buck-converter.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ethangreenhouse.com/projects/rng-pcb.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://ethangreenhouse.com/projects/ecg-signal-processing.html</loc>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>

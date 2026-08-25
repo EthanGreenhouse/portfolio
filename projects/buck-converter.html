@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ethan Greenhouse - 12 V to 5 V Buck Converter</title>
+  <meta name="description" content="A 78 x 16 mm switching regulator board built around a 150 kHz LM2596S-5, converting a 12 V barrel jack to a 5 V USB-A output at a 3 A load target." />
+  <link rel="canonical" href="https://ethangreenhouse.com/projects/buck-converter.html" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ethangreenhouse.com/projects/buck-converter.html" />
+  <meta property="og:title" content="12 V to 5 V Buck Converter - Ethan Greenhouse" />
+  <meta property="og:description" content="A 78 x 16 mm switching regulator board built around a 150 kHz LM2596S-5, converting a 12 V barrel jack to a 5 V USB-A output at a 3 A load target." />
+  <meta property="og:image" content="https://ethangreenhouse.com/images/og-image.png" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="12 V to 5 V Buck Converter - Ethan Greenhouse" />
+  <meta name="twitter:description" content="A 78 x 16 mm switching regulator board built around a 150 kHz LM2596S-5, converting a 12 V barrel jack to a 5 V USB-A output at a 3 A load target." />
+  <meta name="twitter:image" content="https://ethangreenhouse.com/images/og-image.png" />
+
+  <link rel="icon" type="image/png" href="../images/favicon.png" />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="../project.css" />
+</head>
+<body>
+
+  <nav>
+    <a href="../index.html" class="nav-name">Ethan Greenhouse</a>
+    <ul>
+      <li><a href="https://docs.google.com/document/d/1gsTAR54jjcMOcOAFtvFZfDNUDUgtQ1KB/edit?usp=sharing&ouid=106134167172094507117&rtpof=true&sd=true" target="_blank">Resume</a></li>
+      <li><a href="https://www.linkedin.com/in/ethangreenhouse/" target="_blank">LinkedIn</a></li>
+      <li><a href="https://github.com/EthanGreenhouse" target="_blank">GitHub</a></li>
+    </ul>
+  </nav>
+
+  <main class="project-page">
+
+    <a href="../index.html#projects" class="back-link">← Back to Projects</a>
+
+    <header class="project-header">
+      <h1>12 V to 5 V Buck Converter</h1>
+      <p class="project-date">February 2026 · Designed and routed, not yet built</p>
+      <ul class="tags">
+        <li>KiCad</li>
+        <li>Power Electronics</li>
+        <li>PCB Design</li>
+        <li>Switching Regulator</li>
+      </ul>
+    </header>
+
+    <section class="project-section">
+      <h2>Overview</h2>
+      <p>
+        A 78 × 16 mm two-layer board that takes 12 V in on a barrel jack and puts out 5 V on a
+        USB-A socket at up to 3 A. It's a bench and car USB supply, and it was my first switching
+        regulator — the point was to design a converter around a datasheet rather than buy the
+        finished module, and to work through why each passive is the value it is.
+      </p>
+      <p>
+        The heart of it is an <strong>LM2596S-5</strong>, a fixed-5 V step-down regulator in TO-263
+        switching at 150 kHz, rated for 3 A.
+      </p>
+    </section>
+
+    <section class="project-section">
+      <h2>Why a Switcher</h2>
+      <p>
+        A linear regulator doing 12 V to 5 V at 3 A burns the difference as heat: 7 V × 3 A is 21 W
+        dissipated in the package, which is not a thing you can cool on a small board and is around
+        42% efficiency at best. A buck converter stores that energy in an inductor and hands it to
+        the load instead, so the same conversion runs in the region of 80% efficiency and the
+        regulator's thermal problem largely goes away.
+      </p>
+      <p>
+        The cost is that a switcher is a layout problem, not just a schematic problem. Every
+        component choice below is either about keeping the inductor current continuous or about
+        keeping the high-current loops short.
+      </p>
+    </section>
+
+    <section class="project-section">
+      <h2>Component Selection</h2>
+      <p>
+        The design target was continuous conduction at the full 3 A load — meaning the inductor
+        current never falls to zero during the switching cycle. Discontinuous operation isn't
+        dangerous, but it makes the output voltage load-dependent and the ripple worse, so the
+        passives are sized to stay out of it.
+      </p>
+      <ul>
+        <li><strong>L1, 33 µH.</strong> Sized against the LM2596 datasheet's selection curves for a 12 V input at 3 A. The inductor sets the ripple current, and ripple is what determines whether conduction stays continuous at the low end of the load range.</li>
+        <li><strong>C1, 680 µF input.</strong> A buck draws current from the input in pulses, not smoothly. The input capacitor supplies those pulses locally so they don't have to come down the supply leads, which is both a ripple and an EMI concern.</li>
+        <li><strong>C2, 220 µF output.</strong> Absorbs the inductor's ripple current to give a flat 5 V rail, and sets transient response when the load steps.</li>
+        <li><strong>D1, SS54 Schottky.</strong> 40 V, 5 A. This is the catch diode that carries inductor current during the switch-off half of the cycle, so it conducts most of the time at this duty ratio. Schottky rather than silicon for the lower forward drop and fast recovery; the 40 V and 5 A ratings leave headroom above the 12 V input and 3 A load for switching transients.</li>
+      </ul>
+    </section>
+
+    <section class="project-section">
+      <h2>Layout</h2>
+      <p>
+        The input, switch node, and output traces are all widened to 0.8 mm to carry 3 A without
+        meaningful drop or heating. The switch node is the one that matters most for noise: it's the
+        junction of the regulator's output pin, the inductor, and the catch diode, and it swings the
+        full input voltage at 150 kHz. Kept short, it's a trace; let it sprawl and it's an antenna.
+      </p>
+      <p>
+        The 78 × 16 mm outline is deliberately long and narrow so the barrel jack and the USB-A
+        socket sit at opposite ends, giving a clean straight-through power path with the switching
+        section in the middle.
+      </p>
+      <div class="project-img-placeholder">
+        PCB layout — screenshot to be added
+      </div>
+    </section>
+
+    <section class="project-section">
+      <h2>Status</h2>
+      <p>
+        The schematic and layout are complete in KiCad. The board hasn't been fabricated or brought
+        up, so every number on this page is a design figure rather than a measurement. When it's
+        built, the things worth putting on a scope are the switch node waveform, output ripple at
+        full load, and efficiency across the load range against the ~80% the datasheet implies.
+      </p>
+      <div class="project-img-placeholder">
+        Assembled board and scope traces — to be added after build
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Ethan Greenhouse · <a href="mailto:greenhouse.e@northeastern.edu">greenhouse.e@northeastern.edu</a></p>
+  </footer>
+
+</body>
+</html>

@@ -91,17 +91,52 @@
     <div class="project-grid">
 
       <a href="projects/eink-weather-station.html" class="card">
-        <div class="card-thumb card-thumb-soon">
-          <span>Coming Soon</span>
+        <div class="card-thumb">
+          <img src="images/weather-board-angle.jpg" alt="Rev B.2 weather station PCB render" />
         </div>
         <div class="card-body">
           <h3>E-Ink Weather Station</h3>
-          <p>ESP32-based PCB driving a 4.2" e-paper display with live weather data over WiFi, with a complete USB-C to 3.3V power path.</p>
+          <p>Battery-powered ESP32 board driving a 4.2" e-paper display. Two revisions: an LDO swap that took idle life from weeks to months, and an antenna keep-out rebuild.</p>
           <ul class="tags">
             <li>KiCad</li>
             <li>ESP32</li>
             <li>PCB Design</li>
-            <li>Firmware</li>
+            <li>Power</li>
+          </ul>
+        </div>
+      </a>
+
+      <a href="projects/buck-converter.html" class="card">
+        <div class="card-thumb card-thumb-code">
+<pre><span class="cc">// 12 V in, 5 V out, 3 A target</span>
+LM2596S-5      150 kHz switcher
+
+L1    33 uH    D1    SS54 40V 5A
+C_IN  680 uF   C_OUT 220 uF
+Board 78 x 16 mm, 2-layer</pre>
+        </div>
+        <div class="card-body">
+          <h3>12 V to 5 V Buck Converter</h3>
+          <p>Switching regulator taking a 12 V barrel jack to 5 V USB-A at 3 A, sized around a 150 kHz LM2596S-5 to hold continuous conduction at full load.</p>
+          <ul class="tags">
+            <li>KiCad</li>
+            <li>Power Electronics</li>
+            <li>PCB Design</li>
+          </ul>
+        </div>
+      </a>
+
+      <a href="projects/rng-pcb.html" class="card">
+        <div class="card-thumb">
+          <img src="images/rng-board-angle.jpg" alt="Rev B random number generator PCB render" />
+        </div>
+        <div class="card-body">
+          <h3>Random Number Generator PCB</h3>
+          <p>A digital die with no microcontroller: an NE555-clocked CD4017 latches 1 of 10 LEDs. 41 surface-mount parts on a 50 x 40 mm board, hand-soldered.</p>
+          <ul class="tags">
+            <li>KiCad</li>
+            <li>Digital Logic</li>
+            <li>SMT Assembly</li>
           </ul>
         </div>
       </a>
@@ -111,7 +146,7 @@
           <img src="images/ecg-breadboard.jpg" alt="ECG breadboard circuit" />
         </div>
         <div class="card-body">
-          <h3>ECG Signal Processing System</h3>
+          <h3>ECG Acquisition Circuit</h3>
           <p>Analog front-end with cascaded filters and instrumentation amplifier achieving 70.5 dB CMRR, with MATLAB heart rate extraction.</p>
           <ul class="tags">
             <li>Analog Design</li>
@@ -121,24 +156,17 @@
         </div>
       </a>
 
-      <a href="projects/rocket-avionics.html" class="card">
-        <div class="card-thumb card-thumb-code">
-<pre><span class="cc">// Read 14 bytes from IMU over I2C</span>
-Wire.beginTransmission(IMU_ADDR);
-Wire.write(ACCEL_XOUT_H);
-Wire.requestFrom(IMU_ADDR, 14);
-
-accel[0] = (buf[0] &lt;&lt; 8) | buf[1];
-accel[1] = (buf[2] &lt;&lt; 8) | buf[3];
-accel[2] = (buf[4] &lt;&lt; 8) | buf[5];</pre>
+      <a href="projects/pulse-nfc.html" class="card">
+        <div class="card-thumb">
+          <img src="images/pulse-hero.jpg" alt="Pulse metal NFC business card" style="object-position: center 62%;" />
         </div>
         <div class="card-body">
-          <h3>Rocket Avionics Firmware</h3>
-          <p>Embedded C++ firmware for flight control and data acquisition on a custom PCB, with I2C IMU and SPI flash drivers for flight phase detection.</p>
+          <h3>Pulse: Metal NFC Business Card</h3>
+          <p>Custom aluminum NFC business cards with laser engraving and a ferrite layer achieving 100% read reliability despite metal interference.</p>
           <ul class="tags">
-            <li>Embedded C++</li>
-            <li>I2C</li>
-            <li>SPI</li>
+            <li>NFC</li>
+            <li>AutoCAD</li>
+            <li>Laser Engraving</li>
           </ul>
         </div>
       </a>
@@ -159,17 +187,24 @@ accel[2] = (buf[4] &lt;&lt; 8) | buf[5];</pre>
         </div>
       </a>
 
-      <a href="projects/pulse-nfc.html" class="card">
-        <div class="card-thumb">
-          <img src="images/pulse-hero.jpg" alt="Pulse metal NFC business card" style="object-position: center 62%;" />
+      <a href="projects/rocket-avionics.html" class="card">
+        <div class="card-thumb card-thumb-code">
+<pre><span class="cc">// Read 14 bytes from IMU over I2C</span>
+Wire.beginTransmission(IMU_ADDR);
+Wire.write(ACCEL_XOUT_H);
+Wire.requestFrom(IMU_ADDR, 14);
+
+accel[0] = (buf[0] &lt;&lt; 8) | buf[1];
+accel[1] = (buf[2] &lt;&lt; 8) | buf[3];
+accel[2] = (buf[4] &lt;&lt; 8) | buf[5];</pre>
         </div>
         <div class="card-body">
-          <h3>Pulse: Metal NFC Business Card</h3>
-          <p>Custom aluminum NFC business cards with laser engraving and a ferrite layer achieving 100% read reliability despite metal interference.</p>
+          <h3>Rocket Avionics Firmware</h3>
+          <p>Embedded C++ data acquisition firmware for a university aerospace club, with I2C IMU, barometer, and SPI flash drivers feeding a 50 Hz logging loop.</p>
           <ul class="tags">
-            <li>NFC</li>
-            <li>AutoCAD</li>
-            <li>Laser Engraving</li>
+            <li>Embedded C++</li>
+            <li>I2C</li>
+            <li>SPI</li>
           </ul>
         </div>
       </a>

@@ -4,19 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ethan Greenhouse - E-Ink Weather Station</title>
-  <meta name="description" content="ESP32-based PCB driving a 4.2 inch e-paper display with live weather data over WiFi." />
+  <meta name="description" content="Battery-powered ESP32 PCB driving a 4.2 inch e-paper display. Two board revisions, an LDO swap that took idle life from weeks to months, and a rebuilt antenna keep-out." />
   <link rel="canonical" href="https://ethangreenhouse.com/projects/eink-weather-station.html" />
 
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://ethangreenhouse.com/projects/eink-weather-station.html" />
   <meta property="og:title" content="E-Ink Weather Station - Ethan Greenhouse" />
-  <meta property="og:description" content="ESP32-based PCB driving a 4.2 inch e-paper display with live weather data over WiFi." />
-  <meta property="og:image" content="https://ethangreenhouse.com/images/og-image.png" />
+  <meta property="og:description" content="Battery-powered ESP32 PCB driving a 4.2 inch e-paper display. Two board revisions, an LDO swap that took idle life from weeks to months, and a rebuilt antenna keep-out." />
+  <meta property="og:image" content="https://ethangreenhouse.com/images/weather-board-angle.jpg" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="E-Ink Weather Station - Ethan Greenhouse" />
-  <meta name="twitter:description" content="ESP32-based PCB driving a 4.2 inch e-paper display with live weather data over WiFi." />
-  <meta name="twitter:image" content="https://ethangreenhouse.com/images/og-image.png" />
+  <meta name="twitter:description" content="Battery-powered ESP32 PCB driving a 4.2 inch e-paper display. Two board revisions, an LDO swap that took idle life from weeks to months, and a rebuilt antenna keep-out." />
+  <meta name="twitter:image" content="https://ethangreenhouse.com/images/weather-board-angle.jpg" />
 
   <link rel="icon" type="image/png" href="../images/favicon.png" />
   <link rel="stylesheet" href="../style.css" />
@@ -39,33 +39,207 @@
 
     <header class="project-header">
       <h1>E-Ink Weather Station</h1>
-      <p class="project-date">March 2026 – Present</p>
+      <p class="project-date">March 2026 – Present · Rev B.2 design frozen August 21, 2026</p>
       <ul class="tags">
         <li>KiCad</li>
         <li>ESP32</li>
         <li>PCB Design</li>
-        <li>Firmware</li>
+        <li>Power</li>
+        <li>RF Layout</li>
       </ul>
     </header>
 
+    <div class="project-hero-img">
+      <img src="../images/weather-board-angle.jpg" alt="3D render of the Rev B.2 weather station PCB, showing the ESP32-WROOM-32 module with its antenna at the board edge" />
+    </div>
+
     <section class="project-section">
-      <h2>Goal</h2>
+      <h2>Overview</h2>
       <p>
-        A custom 2-layer ESP32-WROOM-32 PCB that drives a Waveshare 4.2" e-paper display with
-        live weather data pulled over WiFi. The board includes a complete power path from USB-C
-        input through a TP4056 charger and AMS1117-3.3 regulator to a stable 3.3V MCU supply.
+        A battery-powered 2-layer ESP32-WROOM-32 board that pulls weather data over WiFi and paints
+        it onto a Waveshare 4.2" four-colour e-paper panel. USB-C feeds a TP4056 single-cell LiPo
+        charger, the cell feeds an AP2112K-3.3 LDO, and the ESP32 spends 99.3% of its life asleep.
+      </p>
+      <p>
+        The interesting part of this project wasn't getting it to work on paper. It was the second
+        revision. Rev A was fully routed and looked finished, and it would not have run off a
+        battery for a single second. Most of what follows is what that taught me.
+      </p>
+      <p>
+        Final state: 80 × 60 mm, 35 components, 52 nets, 49 vias, zero unrouted nets, zero DFM
+        violations at JLCPCB's standard tier.
       </p>
     </section>
 
     <section class="project-section">
-      <h2>Status</h2>
+      <h2>The Regulator That Killed Rev A</h2>
       <p>
-        This project is currently in progress. A full writeup with schematics, PCB layout, and the
-        finished build will be added once the board is assembled and tested.
+        Rev A used an AMS1117-3.3, which is the default LDO in most hobby schematics and the wrong
+        part for anything running off a lithium cell. It's an old NPN-based design with roughly
+        1.1 V of typical dropout and 1.3 V worst case.
       </p>
       <p>
-        Coming soon.
+        A single LiPo cell sits at 4.2 V full and 3.0 V empty. Subtract the dropout and the 3.3 V
+        rail is actually about 2.9 V on a fresh charge and closer to 2.0 V on a half-empty one,
+        against an ESP32 minimum of 3.0 V. The board would have browned out immediately on a full
+        cell and never started at all on a partly discharged one.
       </p>
+      <p>
+        The quiescent current was independently fatal. The AMS1117 draws about 5 mA doing nothing,
+        which flattens a 2000 mAh cell in around two weeks before the ESP32 has drawn a single
+        milliamp.
+      </p>
+      <p>
+        Rev B swapped it for an <strong>AP2112K-3.3</strong> in SOT-23-5: 250 mV typical dropout at
+        600 mA, 55 µA quiescent, 600 mA minimum output. Same job, one footprint change, and the
+        idle-life arithmetic goes from weeks to months.
+      </p>
+      <ul>
+        <li>Dropout: 1.1 V typ / 1.3 V max → <strong>250 mV typ</strong> at 600 mA</li>
+        <li>Quiescent current: ~5 mA → <strong>55 µA</strong></li>
+        <li>Package: SOT-223-3 → SOT-23-5 (adds an EN pin, tied to VIN for always-on)</li>
+      </ul>
+      <p>
+        One honest consequence worth recording: the AP2112K drops out around 3.55 V, while the
+        battery pack's protection module doesn't cut off until roughly 2.4–3.0 V. The ESP32 browns
+        out well before protection ever engages, so the protection circuit is a genuine last-resort
+        net rather than part of normal operation. That also means usable capacity is about 85% of
+        the cell, not all of it, and the runtime estimate below accounts for that.
+      </p>
+    </section>
+
+    <section class="project-section">
+      <h2>Antenna Keep-Out and the Board Rebuild</h2>
+      <p>
+        Rev A's other problem was RF. The ESP32-WROOM module sat in the middle of the board with its
+        antenna pointing into the interior. The footprint's keep-out region — correctly honoured by
+        the copper pours — carved a 48 × 21 mm strip of bare FR4 straight through the middle of the
+        board, roughly 37% of the total area, and stranded the display header on the far side of it.
+      </p>
+      <p>
+        Which meant six SPI signals (<code>MOSI</code>, <code>SCK</code>, <code>EPD_CS</code>,
+        <code>EPD_DC</code>, <code>EPD_RST</code>, <code>EPD_BUSY</code>) plus two ground stitching
+        traces all ran directly through the antenna region to reach the connector. Espressif's
+        guidance is to keep that region clear on every layer; copper in it detunes the antenna and
+        costs range. The board width was also being set by the keep-out rectangle rather than by
+        anything the circuit actually needed.
+      </p>
+      <p>
+        Rev B moves the module to the board edge with the antenna flush against the outline, so the
+        keep-out falls outside the board entirely, and relocates the display header. I verified the
+        result against raw geometry rather than trusting the DRC: across the antenna window, copper
+        is absent from the board edge down to the module's own pad row — no tracks, no vias, no
+        foreign pads.
+      </p>
+      <div class="project-img">
+        <img src="../images/weather-board-top.jpg" alt="Top-down render of the Rev B.2 board showing the ESP32 module at the board edge with the antenna region clear of copper" />
+      </div>
+    </section>
+
+    <section class="project-section">
+      <h2>Power Path</h2>
+      <p>
+        USB-C (J1) → TP4056 charger (U2) → VSYS battery node → AP2112K (U3) → +3V3. Charge current
+        is set to 500 mA by a 2.4 kΩ program resistor, which is 0.25 C into the 2000 mAh pack, and
+        both CC pins carry their own 5.1 kΩ pulldown — sharing a single resistor across CC1 and CC2
+        is the classic USB-C sink mistake and it isn't present here.
+      </p>
+      <p>
+        The system load sits on the same node as the charger's battery pin, which normally corrupts
+        charge termination: the TP4056 terminates by watching current fall to 1/10 of the programmed
+        value, or 50 mA here, and it can't distinguish load from charge. I'd originally planned a
+        discrete load-share FET to fix it. Working through the actual duty cycle showed it wasn't
+        needed — the device is awake about 26 seconds an hour against a ~100 µA baseline, roughly
+        500× below the termination threshold, so termination behaves correctly.
+      </p>
+      <p>
+        That reasoning has a limit, and it's recorded in the board's documentation: leaving it
+        plugged in on the bench with WiFi running continuously draws 100–150 mA, which <em>does</em>
+        exceed the threshold. Charge won't terminate and the cell floats at 4.2 V. Safe, but not
+        something to leave for days during development.
+      </p>
+      <p>
+        Battery sensing goes through a 1 M/1 M divider into IO34. That's ADC1, which matters: ADC2
+        is unusable while WiFi is active on the ESP32. A 100 nF cap at the divider tap handles the
+        high source impedance a 1 M divider presents to the sample-and-hold, at the cost of ~250 ms
+        of settling time after wake.
+      </p>
+    </section>
+
+    <section class="project-section">
+      <h2>Power Budget</h2>
+      <p>
+        The design target was a display you charge a few times a year, not weekly. Estimated draw
+        works out to about 11 mAh/day active (24 wakes of roughly 0.45 mAh each: 5 s of WiFi plus a
+        21 s panel refresh) plus about 2.4 mAh/day asleep, so roughly 13 mAh/day total. Against
+        2000 mAh with ~85% usable before LDO dropout, that's on the order of four months per charge.
+      </p>
+      <p>
+        These are calculated from datasheet figures, not measured — the board hasn't been built yet,
+        and first-build sleep current is the number I most want to check. The AP2112K's 55 µA
+        quiescent is the single largest sleep contributor, larger than the ESP32's own ~10 µA deep
+        sleep, so a lower-Iq regulator is the obvious lever if runtime ever needs extending.
+      </p>
+      <p>
+        One firmware constraint falls out of the power path: WiFi has to be off before a panel
+        refresh starts. ESP32 transmit peaks near 500 mA against the LDO's 600 mA rating, and
+        serialising the two removes any question about headroom.
+      </p>
+    </section>
+
+    <section class="project-section">
+      <h2>Rev A to Rev B.2</h2>
+      <ul>
+        <li>AMS1117-3.3 → AP2112K-3.3 — the change the project depended on</li>
+        <li>Added a 10 µF LDO output capacitor. Rev B.1's nearest +3V3 capacitor was 28.94 mm from the regulator's output pin, leaving it driving ~55 mm of unbypassed trace, which is a loop-stability risk. It now sits 2.34 mm from the pin.</li>
+        <li>Moved the ESP32 module to the board edge and rebuilt the ground pour around the relocated keep-out</li>
+        <li>Added a 1 M/1 M battery-sense divider into IO34</li>
+        <li>Added three M3 mounting holes and three fiducials, placed as a scalene triangle so the pick-and-place machine can resolve rotation as well as position</li>
+        <li>Deleted a dead 10 kΩ pulldown on the charger's TEMP pin, which also cleared the board's only clearance violation</li>
+        <li>Swapped the Omron tactile switches for generic SMD parts at a twentieth of the cost</li>
+        <li>23 components / 41 vias / 48.5 × 57.5 mm → 35 components / 49 vias / 80 × 60 mm</li>
+      </ul>
+      <div class="project-img project-img-tall">
+        <a href="../images/weather-schematic.svg" target="_blank">
+          <img src="../images/weather-schematic.svg" alt="Full schematic of the Rev B.2 weather station board" />
+        </a>
+      </div>
+      <p>
+        Full schematic — <a href="../images/weather-schematic.svg" target="_blank">open it full size</a> to zoom in.
+      </p>
+    </section>
+
+    <section class="project-section">
+      <h2>Manufacturability</h2>
+      <p>
+        Everything sits inside JLCPCB's cheapest process tier: 0.25 mm minimum track, 0.416 mm
+        minimum spacing, 0.3 mm minimum drill, 0.15 mm annular ring, all comfortably clear of the
+        0.127 mm / 0.2 mm / 0.13 mm limits. Two layers, all 27 SMD parts on the front side for
+        single-sided assembly, only two through-hole connectors, and fiducials present. Zero
+        violations.
+      </p>
+      <p>
+        The one accepted trade-off is grounding. Twenty-five track segments route on the bottom
+        layer, cutting the board's only ground pour, and six nets change layers without a stitching
+        via within 3 mm — worst case, the display chip-select net has 28.6% reference coverage over
+        50.8 mm. That's a radiated-emissions problem, not a functional one; SPI to a slow e-paper
+        panel at a few MHz will work fine. I accepted it because this board isn't seeking
+        certification, but it's the first thing I'd fix on a product that was.
+      </p>
+    </section>
+
+    <section class="project-section">
+      <h2>Status &amp; Next Steps</h2>
+      <p>
+        Design frozen August 21, 2026 and cleared for fabrication; gerbers, BOM, and pick-and-place
+        files are generated. The build hasn't happened yet.
+      </p>
+      <ul>
+        <li>Meter the battery connector polarity before plugging in a cell — JST PH pigtails aren't consistently wired and there's no reverse-polarity protection on this board</li>
+        <li>Bring up on USB only, confirm 3.3 V at the display header before connecting the panel</li>
+        <li>Measure actual sleep current against the ~13 mAh/day estimate</li>
+        <li>Isolate the display module's level translator draw — it's permanently powered from the header with no way to shut it off, and if it costs tens of microamps it's worth a load switch in Rev C</li>
+      </ul>
     </section>
 
   </main>

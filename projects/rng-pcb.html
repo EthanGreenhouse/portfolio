@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ethan Greenhouse - Random Number Generator PCB</title>
+  <meta name="description" content="A 41-component surface-mount board that latches 1 of 10 LEDs using an NE555-clocked CD4017 decade counter. No microcontroller." />
+  <link rel="canonical" href="https://ethangreenhouse.com/projects/rng-pcb.html" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ethangreenhouse.com/projects/rng-pcb.html" />
+  <meta property="og:title" content="Random Number Generator PCB - Ethan Greenhouse" />
+  <meta property="og:description" content="A 41-component surface-mount board that latches 1 of 10 LEDs using an NE555-clocked CD4017 decade counter. No microcontroller." />
+  <meta property="og:image" content="https://ethangreenhouse.com/images/rng-board-angle.jpg" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Random Number Generator PCB - Ethan Greenhouse" />
+  <meta name="twitter:description" content="A 41-component surface-mount board that latches 1 of 10 LEDs using an NE555-clocked CD4017 decade counter. No microcontroller." />
+  <meta name="twitter:image" content="https://ethangreenhouse.com/images/rng-board-angle.jpg" />
+
+  <link rel="icon" type="image/png" href="../images/favicon.png" />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="../project.css" />
+</head>
+<body>
+
+  <nav>
+    <a href="../index.html" class="nav-name">Ethan Greenhouse</a>
+    <ul>
+      <li><a href="https://docs.google.com/document/d/1gsTAR54jjcMOcOAFtvFZfDNUDUgtQ1KB/edit?usp=sharing&ouid=106134167172094507117&rtpof=true&sd=true" target="_blank">Resume</a></li>
+      <li><a href="https://www.linkedin.com/in/ethangreenhouse/" target="_blank">LinkedIn</a></li>
+      <li><a href="https://github.com/EthanGreenhouse" target="_blank">GitHub</a></li>
+    </ul>
+  </nav>
+
+  <main class="project-page">
+
+    <a href="../index.html#projects" class="back-link">← Back to Projects</a>
+
+    <header class="project-header">
+      <h1>Random Number Generator PCB</h1>
+      <p class="project-date">August 2026 · Rev B · Boards in hand, assembly in progress</p>
+      <ul class="tags">
+        <li>KiCad</li>
+        <li>Digital Logic</li>
+        <li>PCB Design</li>
+        <li>SMT Assembly</li>
+      </ul>
+    </header>
+
+    <div class="project-hero-img">
+      <img src="../images/rng-board-angle.jpg" alt="3D render of the Rev B random number generator PCB with ten numbered LEDs and RESET and ROLL buttons" />
+    </div>
+
+    <section class="project-section">
+      <h2>Overview</h2>
+      <p>
+        Press ROLL, ten LEDs blur, release, and exactly one of them stays lit. It's a digital die,
+        and it does the job with two 1970s logic chips and no microcontroller at all.
+      </p>
+      <p>
+        I built this one to solder, not to solve a problem. Every other board in this portfolio is
+        something I designed and sent to a fab; this is the first one I'm populating by hand, so it
+        was deliberately specified around parts I could place with tweezers and an iron — 0805
+        passives, SOIC packages, nothing fine-pitch.
+      </p>
+      <p>
+        41 components, 50 × 40 mm, two layers, 43 vias, all surface-mount.
+      </p>
+    </section>
+
+    <section class="project-section">
+      <h2>How It Works</h2>
+      <p>
+        An <strong>NE555</strong> in astable mode free-runs as a clock. That clock drives a
+        <strong>CD4017</strong> decade counter, which is the whole trick of this circuit: the 4017
+        has ten outputs and asserts exactly one of them at a time, advancing on each clock edge. Ten
+        outputs, ten LEDs, one lit — the decoding is free.
+      </p>
+      <p>
+        The ROLL button gates the 4017's clock enable against a 10 kΩ pull-up. Held down, the
+        counter runs at the 555's frequency, far faster than the eye can follow, so all ten LEDs
+        appear lit at once. Release it and the clock enable goes high, the counter freezes wherever
+        it happened to be, and one LED stays on. A second button resets the counter to output zero.
+      </p>
+      <p>
+        The randomness comes from the gap between human reaction time and the oscillator frequency:
+        the 555 cycles through all ten states orders of magnitude faster than anyone can time a
+        button release. It's not cryptographic randomness — the counter is perfectly
+        deterministic — but for picking a number from one to ten it's indistinguishable from it.
+      </p>
+    </section>
+
+    <section class="project-section">
+      <h2>Design Notes</h2>
+      <ul>
+        <li><strong>1 kΩ series resistors</strong> on all ten LEDs. With a 5 V rail and a red LED's ~2 V forward drop, that's around 3 mA each — dim enough to be easy on the eyes indoors and to keep total draw low even in the transient state where the counter is sweeping.</li>
+        <li><strong>100 nF decoupling at both ICs.</strong> The 555 is notorious for injecting current spikes onto the supply rail when its output stage switches, and the 4017 sits on the same rail. Local decoupling at each package is what stops that from showing up as false clocking.</li>
+        <li><strong>Back-side ground pour</strong> to give every return path a short trip home rather than routing ground as individual traces.</li>
+        <li><strong>USB-C power input</strong> with 5.1 kΩ CC pulldowns, so a standard charger or laptop port will actually supply 5 V. Both CC pins get their own resistor.</li>
+        <li>A separate power indicator LED, so the board tells you it's alive even when the counter is reset and no output is asserted.</li>
+      </ul>
+      <p>
+        The silkscreen carries numbers 1 through 10 above the LEDs and labels both buttons, which
+        matters more than it sounds — a board where you have to consult the schematic to know which
+        button does what is a board you designed for yourself and nobody else.
+      </p>
+      <div class="project-img">
+        <img src="../images/rng-board-top.jpg" alt="Top-down render of the RNG board showing the ten numbered LEDs, the CD4017 and NE555, and the RESET and ROLL buttons" />
+      </div>
+    </section>
+
+    <section class="project-section">
+      <h2>Schematic</h2>
+      <div class="project-img project-img-tall">
+        <a href="../images/rng-schematic.svg" target="_blank">
+          <img src="../images/rng-schematic.svg" alt="Full schematic of the Rev B random number generator board" />
+        </a>
+      </div>
+      <p>
+        Full schematic — <a href="../images/rng-schematic.svg" target="_blank">open it full size</a> to zoom in.
+      </p>
+    </section>
+
+    <section class="project-section">
+      <h2>Build Progress</h2>
+      <p>
+        The Rev B boards arrived and I'm hand-soldering them now. This is the first board in this
+        portfolio I'll have physically brought up myself, so the section below will fill in with
+        photographs of the real thing rather than renders.
+      </p>
+      <div class="project-img-row">
+        <div class="project-img-placeholder">
+          Bare board — photo to be added
+        </div>
+        <div class="project-img-placeholder">
+          Populated board — photo to be added
+        </div>
+      </div>
+      <div class="project-img-placeholder">
+        NE555 clock output on the scope — trace to be added
+      </div>
+      <p>
+        First things to check at bring-up: the 555's actual oscillation frequency against the
+        calculated value, that the 4017 advances cleanly on every edge without double-clocking, and
+        that the clock enable genuinely freezes the counter rather than letting it drift.
+      </p>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Ethan Greenhouse · <a href="mailto:greenhouse.e@northeastern.edu">greenhouse.e@northeastern.edu</a></p>
+  </footer>
+
+</body>
+</html>

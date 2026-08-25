@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ethan Greenhouse -   Rocket Avionics Firmware</title>
-  <meta name="description" content="Embedded C++ firmware for flight control and data acquisition on a custom PCB, with I2C IMU and SPI flash drivers." />
+  <title>Ethan Greenhouse - Rocket Avionics Firmware</title>
+  <meta name="description" content="Embedded C++ data acquisition firmware for a university aerospace club, with I2C IMU, barometer, and SPI flash drivers on an Adafruit Feather M0." />
   <link rel="canonical" href="https://ethangreenhouse.com/projects/rocket-avionics.html" />
 
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://ethangreenhouse.com/projects/rocket-avionics.html" />
   <meta property="og:title" content="Rocket Avionics Firmware - Ethan Greenhouse" />
-  <meta property="og:description" content="Embedded C++ firmware for flight control and data acquisition on a custom PCB, with I2C IMU and SPI flash drivers." />
+  <meta property="og:description" content="Embedded C++ data acquisition firmware for a university aerospace club, with I2C IMU, barometer, and SPI flash drivers on an Adafruit Feather M0." />
   <meta property="og:image" content="https://ethangreenhouse.com/images/og-image.png" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Rocket Avionics Firmware - Ethan Greenhouse" />
-  <meta name="twitter:description" content="Embedded C++ firmware for flight control and data acquisition on a custom PCB, with I2C IMU and SPI flash drivers." />
+  <meta name="twitter:description" content="Embedded C++ data acquisition firmware for a university aerospace club, with I2C IMU, barometer, and SPI flash drivers on an Adafruit Feather M0." />
   <meta name="twitter:image" content="https://ethangreenhouse.com/images/og-image.png" />
 
   <link rel="icon" type="image/png" href="../images/favicon.png" />
@@ -50,18 +50,23 @@
     <section class="project-section">
       <h2>Overview</h2>
       <p>
-        Embedded C++ firmware for a rocket avionics board, written as part of Northeastern's
-        aerospace club. The firmware runs on a custom PCB built around an Adafruit Feather M0 and
-        handles three sensor drivers (IMU, barometer, flash memory), a 50 Hz acquisition loop,
-        filtering and event detection logic for flight phase identification, and on-board logging
-        for post-flight data offload over serial.
+        Embedded C++ data acquisition firmware for the rocket avionics stack at Northeastern's
+        aerospace club. The firmware runs on an Adafruit Feather M0 and handles three sensor
+        drivers (IMU, barometer, flash memory), a 50 Hz acquisition loop, and on-board logging with
+        a serial command interface for post-flight data offload.
+      </p>
+      <p>
+        My contribution was the driver and logging layer. The board itself was the club's, and the
+        flight-phase state machine described below was specified but never landed in the flight
+        build.
       </p>
     </section>
 
     <section class="project-section">
       <h2>Hardware</h2>
       <p>
-        The board is built around the Feather M0 (ATSAMD21 microcontroller) with three sensors:
+        The stack runs on an Adafruit Feather M0 (ATSAMD21 microcontroller) — an off-the-shelf dev
+        board, not a board I designed — with three sensors:
       </p>
       <ul>
         <li><strong>ICM-20602 IMU</strong> over I2C: 3-axis accelerometer and gyroscope, configured for ±16 g and ±2000 dps</li>
@@ -111,26 +116,35 @@ gyroData[2]  = (int16_t)((buf[12] &lt;&lt; 8) | buf[13]);</code></pre>
       <p>
         The S25FL512 driver handles SPI writes to flash in 512-byte page chunks, with a serial CLI
         that exposes erase, offload, and print commands for post-flight data recovery. Each log
-        record packs timestamp, pressure, temperature, altitude, velocity, net acceleration, flight
-        state, and min/max values into a fixed struct that gets streamed to flash on every tick.
+        record is a fixed-size struct streamed to flash on every tick. Timestamp, pressure,
+        temperature, and altitude carry real measurements; the struct also reserves fields for
+        velocity, net acceleration, flight state, and min/max values, which the flight build left
+        at zero (see below).
       </p>
     </section>
 
     <section class="project-section">
-      <h2>Filtering & Event Detection</h2>
+      <h2>Event Detection: Designed, Not Shipped</h2>
       <p>
-        The biggest challenge wasn't reading the sensors, it was deciding what counted as a real
-        flight event. The IMU is inherently noisy. Raw readings jump around even when the sensor
-        is sitting still on a desk, which means a single sample is never enough to trust.
+        The hardest part of the project wasn't reading the sensors, it was deciding what counted as
+        a real flight event. The IMU is inherently noisy. Raw readings jump around even when the
+        sensor is sitting still on a desk, which means a single sample is never enough to trust.
       </p>
       <p>
-        To handle this I used a running average over the last 10 samples. The tricky part was
-        calibrating the window size. Too much smoothing and the system reacts too slowly to catch
+        The approach I worked out was a running average over the last 10 samples, with the window
+        size as the main tuning knob. Too much smoothing and the system reacts too slowly to catch
         a real event like motor ignition. Too little and noise spikes trigger false positives. For
-        launch detection specifically, the firmware looks for sustained acceleration above 2 to 3 G
-        for more than 100 ms, so a single noisy spike won't falsely trigger it. Similar threshold
-        and duration windows handle apogee detection (sustained near-zero net acceleration combined
-        with peak altitude) and parachute deployment.
+        launch detection that meant looking for sustained acceleration above 2 to 3 G for more than
+        100 ms, so a single noisy spike couldn't fire it. Apogee (sustained near-zero net
+        acceleration combined with peak altitude) and parachute deployment would use the same
+        threshold-plus-duration pattern.
+      </p>
+      <p>
+        <strong>None of this made it into the flight build.</strong> The log record reserves fields
+        for velocity, net acceleration, and flight state, but the firmware writes zeros to all
+        three — what actually flew was raw sample logging at 50 Hz, with the state machine left as
+        a design I never got to implement. Deriving the flight phases offline from the logged data
+        was the fallback, and it's the obvious next thing to build.
       </p>
     </section>
 
