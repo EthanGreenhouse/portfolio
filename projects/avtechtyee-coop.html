@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ethan Greenhouse - Quality Engineering Co-op</title>
+  <meta name="description" content="Six month Quality Engineering co-op at AvtechTyee: automated machine vision inspection for circuit board assemblies, and a calibrated supplier risk model built on seven years of data." />
+  <link rel="canonical" href="https://ethangreenhouse.com/projects/avtechtyee-coop.html" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ethangreenhouse.com/projects/avtechtyee-coop.html" />
+  <meta property="og:title" content="Quality Engineering Co-op - Ethan Greenhouse" />
+  <meta property="og:description" content="Six month Quality Engineering co-op at AvtechTyee: automated machine vision inspection for circuit board assemblies, and a calibrated supplier risk model built on seven years of data." />
+  <meta property="og:image" content="https://ethangreenhouse.com/images/coop-vision-heatmap.jpg" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Quality Engineering Co-op - Ethan Greenhouse" />
+  <meta name="twitter:description" content="Six month Quality Engineering co-op at AvtechTyee: automated machine vision inspection for circuit board assemblies, and a calibrated supplier risk model built on seven years of data." />
+  <meta name="twitter:image" content="https://ethangreenhouse.com/images/coop-vision-heatmap.jpg" />
+
+  <link rel="icon" type="image/png" href="../images/favicon.png" />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="../project.css" />
+</head>
+<body>
+
+  <nav>
+    <a href="../index.html" class="nav-name">Ethan Greenhouse</a>
+    <ul>
+      <li><a href="https://docs.google.com/document/d/1gsTAR54jjcMOcOAFtvFZfDNUDUgtQ1KB/edit?usp=sharing&ouid=106134167172094507117&rtpof=true&sd=true" target="_blank">Resume</a></li>
+      <li><a href="https://www.linkedin.com/in/ethangreenhouse/" target="_blank">LinkedIn</a></li>
+      <li><a href="https://github.com/EthanGreenhouse" target="_blank">GitHub</a></li>
+    </ul>
+  </nav>
+
+  <main class="project-page">
+
+    <a href="../index.html#experience" class="back-link">← Back to Home</a>
+
+    <header class="project-header">
+      <h1>Quality Engineering Co-op</h1>
+      <p class="project-date">AvtechTyee · January 2026 – June 2026</p>
+      <ul class="tags">
+        <li>Machine Vision</li>
+        <li>Python</li>
+        <li>Gage R&amp;R</li>
+        <li>Aerospace</li>
+      </ul>
+    </header>
+
+    <section class="project-section">
+      <h2>Overview</h2>
+      <p>
+        Six months as a Quality Engineer at AvtechTyee, an aerospace manufacturer. I worked on two
+        projects. The first replaced manual incoming inspection of circuit board assemblies with an
+        automated machine vision system. The second was a model that predicts which suppliers are
+        most likely to cause quality problems, built on seven years of historical data.
+      </p>
+      <p>
+        Everything below is described at the level of method and outcome. No supplier names,
+        internal documents, or operational data appear on this page.
+      </p>
+    </section>
+
+    <section class="project-section">
+      <h2>Machine Vision Inspection</h2>
+      <p>
+        Incoming inspection of circuit board assemblies was manual. An inspector compared each board
+        against documentation by eye, which is slow and depends on who is working that day. A board
+        that passes inspection while carrying a defect is far more expensive to find later in the
+        build, so the cost of a miss is high.
+      </p>
+      <p>
+        I set up a Keyence VS-series vision system to do the comparison automatically. The camera
+        mounts on an adjustable arm over a fixed inspection stage, so board position and lighting stay
+        consistent between units. Each board type gets a program that captures a reference image and
+        compares incoming units against it.
+      </p>
+      <div class="project-img project-img-tall">
+        <img src="../images/coop-vision-station.jpg" alt="Keyence vision camera mounted on an adjustable extruded aluminum arm above the inspection mat" />
+      </div>
+      <p>
+        Differences show up as a heat map over the board. A unit that matches the reference passes.
+        A unit with a missing component, a wrong orientation, or foreign material appears as a region
+        of disagreement, and the operator sees the location rather than just a pass or fail result.
+      </p>
+      <div class="project-img project-img-wide">
+        <img src="../images/coop-vision-heatmap.jpg" alt="Side by side inspection results: a passing board outlined in green, and a failing board outlined in red with a heat map marking the region that differs from the reference" />
+      </div>
+      <p>
+        I programmed the system for 25+ board types, ran a Gage R&amp;R study to confirm the results
+        were repeatable rather than sensitive to setup, wrote the programming and operating guides,
+        and trained the inspectors to run and extend it themselves. The handover mattered as much as
+        the build. An inspection fixture only one person can program stops working the day that
+        person leaves.
+      </p>
+    </section>
+
+    <section class="project-section">
+      <h2>Supplier Risk Model</h2>
+      <p>
+        The second project was predicting supplier quality problems before they turned into
+        nonconformance reports, using seven years of history at supplier-month granularity.
+      </p>
+      <p>
+        The hard part was defining the target. "This supplier is getting worse" is easy to say and
+        difficult to write down. I settled on a trend label: a supplier is positive for a given month
+        if their nonconformance rate over the next three months is at least 1.5 times their rate over
+        the previous three.
+      </p>
+      <p>
+        That definition on its own produced a lot of noise. A supplier with zero reports in the past
+        three months and one in the next three is mathematically a large increase and operationally
+        nothing at all. Requiring a minimum count in the forward window removed most of those false
+        positives.
+      </p>
+<pre><code># "Trend up" means future_avg &gt;= multiple * past_avg.
+label_window: int = 3
+trend_multiple: float = 1.5
+
+# Minimum total reports in the future window required to count as a
+# positive trend. Filters out noise positives where a supplier had 0 in
+# the past 3 months and then 1 in the next 3 (mathematically a positive
+# trend but operationally just normal variation).
+min_future_sum: int = 2</code></pre>
+      <p>
+        The classifier is a histogram gradient boosting model, with a logistic regression kept
+        alongside it as a simpler baseline to measure against. Both run through the same
+        preprocessing pipeline. Predictions are calibrated so the output reads as an actual
+        probability rather than only a ranking, which matters because the threshold is a business
+        decision about how many suppliers the team can review.
+      </p>
+      <p>
+        I tested both calibration methods. With roughly ten positives per fold, sigmoid calibration
+        compressed nearly every prediction toward the base rate. Isotonic gave a slightly better
+        Brier score and a wider spread, which is what makes threshold tuning possible at all.
+      </p>
+<pre><code>hgb = CalibratedClassifierCV(
+    estimator=hgb_inner,
+    method="isotonic",
+    cv=n_folds,
+)</code></pre>
+      <p>
+        Validation is a walk-forward backtest rather than a random split. A random split would let
+        the model train on later months and score earlier ones, which inflates the result and would
+        not survive contact with real use.
+      </p>
+      <p>
+        Source is on GitHub at
+        <a href="https://github.com/EthanGreenhouse/supplier-risk-model" target="_blank">supplier-risk-model</a>.
+      </p>
+    </section>
+
+    <section class="project-section">
+      <h2>Results</h2>
+      <p>
+        The top 5% of suppliers by predicted risk failed 1.6 times more often than a random
+        selection of the same size. That ratio is the number that decides whether the model is worth
+        running at all, since a model that cannot beat picking at random costs review time and
+        returns nothing.
+      </p>
+      <p>
+        I delivered it as a desktop tool with an Excel dashboard so the quality team could run it
+        monthly without touching Python. It is now used in monthly reviews covering 150+ suppliers.
+      </p>
+      <p>
+        The vision system replaced manual incoming inspection across 25+ circuit board types, saving
+        an estimated $100K per year in scrap, labor, and defect cost.
+      </p>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Ethan Greenhouse · <a href="mailto:greenhouse.e@northeastern.edu">greenhouse.e@northeastern.edu</a></p>
+  </footer>
+
+</body>
+</html>

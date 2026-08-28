@@ -185,6 +185,46 @@ nav ul a:hover {
   50%       { transform: translateY(5px); }
 }
 
+/* ── Experience ── */
+#experience {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 5rem 2.5rem 0;
+}
+
+.experience-card {
+  display: block;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 1.5rem 1.75rem;
+  color: var(--text);
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.experience-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-3px);
+}
+
+.experience-role {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.experience-meta {
+  color: var(--accent);
+  font-size: 0.875rem;
+  margin: 0.2rem 0 0.7rem;
+}
+
+.experience-card p.experience-body {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
 /* ── Projects ── */
 #projects {
   max-width: 1100px;
@@ -192,7 +232,8 @@ nav ul a:hover {
   padding: 5rem 2.5rem 6rem;
 }
 
-#projects h2 {
+#projects h2,
+#experience h2 {
   font-size: 1.75rem;
   font-weight: 700;
   margin-bottom: 2.5rem;
@@ -396,9 +437,14 @@ footer a:hover {
   }
 
   #hero,
-  #projects {
+  #projects,
+  #experience {
     padding-left: 1.25rem;
     padding-right: 1.25rem;
+  }
+
+  #experience {
+    padding-top: 3rem;
   }
 
   #projects {
@@ -406,7 +452,8 @@ footer a:hover {
     padding-bottom: 4rem;
   }
 
-  #projects h2 {
+  #projects h2,
+  #experience h2 {
     font-size: 1.4rem;
   }
 
