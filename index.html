@@ -45,8 +45,11 @@
       "Analog Circuit Design",
       "Signal Processing",
       "KiCad",
+      "LTspice",
       "SolidWorks",
+      "AutoCAD",
       "C++",
+      "Python",
       "MATLAB"
     ]
   }
@@ -71,7 +74,7 @@
         <h1>Ethan Greenhouse</h1>
         <p class="tagline">Electrical Engineering Student · Northeastern University · Class of 2028</p>
         <p class="bio">
-          Electrical Engineering student at Northeastern University with a focus on PCB design and power electronics. Currently on co-op at AvtechTyee as a Quality Engineer, working on machine vision inspection systems and machine learning supplier quality analytics in an AS9100 aerospace environment.
+          Electrical Engineering student at Northeastern University with a focus on PCB design and power electronics. Completed a Quality Engineer co-op at AvtechTyee, where I replaced manual PCBA inspection with a Keyence machine vision system covering 25+ board types, and built a Python supplier-risk model now used in monthly reviews of 150+ suppliers.
         </p>
         <a href="#projects" class="btn">View My Work</a>
       </div>
@@ -136,7 +139,7 @@ C_IN  680 uF   C_OUT 220 uF
 Board 78 x 16 mm, 2-layer</pre>
         </div>
         <div class="card-body">
-          <h3>12 V to 5 V Buck Converter</h3>
+          <h3>12 V to 5 V Buck Converter PCB</h3>
           <p>Switching regulator taking a 12 V barrel jack to 5 V USB-A at 3 A, sized around a 150 kHz LM2596S-5 to hold continuous conduction at full load.</p>
           <ul class="tags">
             <li>KiCad</li>
@@ -161,37 +164,6 @@ Board 78 x 16 mm, 2-layer</pre>
         </div>
       </a>
 
-      <a href="projects/pulse-nfc.html" class="card">
-        <div class="card-thumb">
-          <img src="images/pulse-hero.jpg" alt="Pulse metal NFC business card" style="object-position: center 62%;" />
-        </div>
-        <div class="card-body">
-          <h3>Pulse: Metal NFC Business Card</h3>
-          <p>Custom aluminum NFC business cards with laser engraving and a ferrite layer achieving 100% read reliability despite metal interference.</p>
-          <ul class="tags">
-            <li>NFC</li>
-            <li>AutoCAD</li>
-            <li>Laser Engraving</li>
-          </ul>
-        </div>
-      </a>
-
-      <a href="projects/laser-maze.html" class="card">
-        <div class="card-thumb">
-          <img src="images/laser-maze-team.jpg" alt="Team Laser at Boston Children's Museum" style="object-position: center top;" />
-        </div>
-        <div class="card-body">
-          <h3>Laser Maze Game</h3>
-          <p>Interactive laser puzzle game built for Boston Children's Museum, serving 100+ visitors. Combines Arduino firmware, 3D-printed hardware, and a custom enclosure.</p>
-          <ul class="tags">
-            <li>Arduino</li>
-            <li>SolidWorks</li>
-            <li>AutoCAD</li>
-            <li>3D Printing</li>
-          </ul>
-        </div>
-      </a>
-
       <a href="projects/rocket-avionics.html" class="card">
         <div class="card-thumb card-thumb-code">
 <pre><span class="cc">// Read 14 bytes from IMU over I2C</span>
@@ -210,6 +182,37 @@ accel[2] = (buf[4] &lt;&lt; 8) | buf[5];</pre>
             <li>Embedded C++</li>
             <li>I2C</li>
             <li>SPI</li>
+          </ul>
+        </div>
+      </a>
+
+      <a href="projects/laser-maze.html" class="card">
+        <div class="card-thumb">
+          <img src="images/laser-maze-team.jpg" alt="Team Laser at Boston Children's Museum" style="object-position: center top;" />
+        </div>
+        <div class="card-body">
+          <h3>Laser Maze Museum Exhibit</h3>
+          <p>Interactive laser puzzle game built for Boston Children's Museum, serving 100+ visitors. Combines Arduino firmware, 3D-printed hardware, and a custom enclosure.</p>
+          <ul class="tags">
+            <li>Arduino</li>
+            <li>SolidWorks</li>
+            <li>AutoCAD</li>
+            <li>3D Printing</li>
+          </ul>
+        </div>
+      </a>
+
+      <a href="projects/pulse-nfc.html" class="card">
+        <div class="card-thumb">
+          <img src="images/pulse-hero.jpg" alt="Pulse metal NFC business card" style="object-position: center 62%;" />
+        </div>
+        <div class="card-body">
+          <h3>Pulse: Metal NFC Business Card</h3>
+          <p>Custom aluminum NFC business cards with laser engraving and a ferrite layer achieving 100% read reliability despite metal interference.</p>
+          <ul class="tags">
+            <li>NFC</li>
+            <li>AutoCAD</li>
+            <li>Laser Engraving</li>
           </ul>
         </div>
       </a>
