@@ -4,18 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ethan Greenhouse - Random Number Generator PCB</title>
-  <meta name="description" content="A 41-component surface-mount board that latches 1 of 10 LEDs using an NE555-clocked CD4017 decade counter. No microcontroller." />
+  <meta name="description" content="A 41-component surface mount board that latches 1 of 10 LEDs using an NE555-clocked CD4017 decade counter, with no microcontroller." />
   <link rel="canonical" href="https://ethangreenhouse.com/projects/rng-pcb.html" />
 
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://ethangreenhouse.com/projects/rng-pcb.html" />
   <meta property="og:title" content="Random Number Generator PCB - Ethan Greenhouse" />
-  <meta property="og:description" content="A 41-component surface-mount board that latches 1 of 10 LEDs using an NE555-clocked CD4017 decade counter. No microcontroller." />
+  <meta property="og:description" content="A 41-component surface mount board that latches 1 of 10 LEDs using an NE555-clocked CD4017 decade counter, with no microcontroller." />
   <meta property="og:image" content="https://ethangreenhouse.com/images/rng-assembled.jpg" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Random Number Generator PCB - Ethan Greenhouse" />
-  <meta name="twitter:description" content="A 41-component surface-mount board that latches 1 of 10 LEDs using an NE555-clocked CD4017 decade counter. No microcontroller." />
+  <meta name="twitter:description" content="A 41-component surface mount board that latches 1 of 10 LEDs using an NE555-clocked CD4017 decade counter, with no microcontroller." />
   <meta name="twitter:image" content="https://ethangreenhouse.com/images/rng-assembled.jpg" />
 
   <link rel="icon" type="image/png" href="../images/favicon.png" />
@@ -39,7 +39,7 @@
 
     <header class="project-header">
       <h1>Random Number Generator PCB</h1>
-      <p class="project-date">August 2026 · Rev B · Assembled, bring-up pending</p>
+      <p class="project-date">August 2026 · Rev B</p>
       <ul class="tags">
         <li>KiCad</li>
         <li>Digital Logic</li>
@@ -49,88 +49,77 @@
     </header>
 
     <div class="project-hero-img">
-      <img src="../images/rng-assembled.jpg" alt="Assembled Rev B random number generator board: ten numbered LEDs, CD4017 and NE555 in SOIC packages, RESET and ROLL buttons, and an edge-mounted USB-C connector" />
+      <img src="../images/rng-assembled.jpg" alt="Assembled Rev B random number generator board with ten numbered LEDs, the CD4017 and NE555, RESET and ROLL buttons, and an edge mounted USB-C connector" />
     </div>
 
     <section class="project-section">
       <h2>Overview</h2>
       <p>
-        Press ROLL, ten LEDs blur, release, and exactly one of them stays lit. It's a digital die,
-        and it does the job with two 1970s logic chips and no microcontroller at all.
+        Press ROLL and ten LEDs blur together. Release it and one stays lit. The board is a digital
+        die built from two pieces of 1970s logic with no microcontroller involved.
       </p>
       <p>
-        I built this one to solder, not to solve a problem. Every other board in this portfolio is
-        something I designed and sent to a fab; this is the first one I'm populating by hand, so it
-        was deliberately specified around parts I could place with tweezers and an iron — 0805
-        passives, SOIC packages, nothing fine-pitch.
-      </p>
-      <p>
-        41 components, 50 × 40 mm, two layers, 43 vias, all surface-mount.
+        It was also the first board I assembled by hand, so it was specified around parts I could
+        place with tweezers and an iron: 0805 passives, SOIC packages, nothing fine pitch. 41
+        components, 50 × 40 mm, two layers, 43 vias, all surface mount.
       </p>
     </section>
 
     <section class="project-section">
       <h2>How It Works</h2>
       <p>
-        An <strong>NE555</strong> in astable mode free-runs as a clock. That clock drives a
-        <strong>CD4017</strong> decade counter, which is the whole trick of this circuit: the 4017
-        has ten outputs and asserts exactly one of them at a time, advancing on each clock edge. Ten
-        outputs, ten LEDs, one lit — the decoding is free.
+        An NE555 in astable mode runs as a free running clock and drives a CD4017 decade counter. The
+        4017 has ten outputs and asserts exactly one at a time, advancing on each clock edge, so ten
+        outputs drive ten LEDs with no decoding logic needed.
       </p>
       <p>
-        The ROLL button gates the 4017's clock enable against a 10 kΩ pull-up. Held down, the
-        counter runs at the 555's frequency, far faster than the eye can follow, so all ten LEDs
-        appear lit at once. Release it and the clock enable goes high, the counter freezes wherever
-        it happened to be, and one LED stays on. A second button resets the counter to output zero.
+        The ROLL button gates the 4017 clock enable against a 10 kΩ pull-up. Held down, the counter
+        runs at the 555 frequency, far faster than the eye can follow, so all ten LEDs appear lit at
+        once. Released, the clock enable goes high and the counter freezes wherever it happened to
+        be. RESET returns the counter to output zero.
       </p>
       <p>
-        The randomness comes from the gap between human reaction time and the oscillator frequency:
-        the 555 cycles through all ten states orders of magnitude faster than anyone can time a
-        button release. It's not cryptographic randomness — the counter is perfectly
-        deterministic — but for picking a number from one to ten it's indistinguishable from it.
+        The randomness comes from the gap between human reaction time and the oscillator frequency.
+        It is not cryptographic randomness, since the counter is fully deterministic, but for picking
+        a number from one to ten it is indistinguishable from it.
       </p>
     </section>
 
     <section class="project-section">
       <h2>Design Notes</h2>
       <ul>
-        <li><strong>1 kΩ series resistors</strong> on all ten LEDs. With a 5 V rail and a red LED's ~2 V forward drop, that's around 3 mA each — dim enough to be easy on the eyes indoors and to keep total draw low even in the transient state where the counter is sweeping.</li>
-        <li><strong>100 nF decoupling at both ICs.</strong> The 555 is notorious for injecting current spikes onto the supply rail when its output stage switches, and the 4017 sits on the same rail. Local decoupling at each package is what stops that from showing up as false clocking.</li>
-        <li><strong>Back-side ground pour</strong> to give every return path a short trip home rather than routing ground as individual traces.</li>
-        <li><strong>USB-C power input</strong> with 5.1 kΩ CC pulldowns, so a standard charger or laptop port will actually supply 5 V. Both CC pins get their own resistor.</li>
-        <li>A separate power indicator LED, so the board tells you it's alive even when the counter is reset and no output is asserted.</li>
+        <li><strong>1 kΩ series resistors</strong> on all ten LEDs. With a 5 V rail and a red LED forward drop near 2 V, that is about 3 mA each, dim enough to be comfortable indoors and low enough to keep total draw down while the counter is sweeping.</li>
+        <li><strong>100 nF decoupling at both ICs.</strong> The 555 injects current spikes onto the supply rail when its output stage switches, and the 4017 shares that rail. Local decoupling at each package keeps that from showing up as false clocking.</li>
+        <li><strong>Back-side ground pour</strong>, so return paths are short rather than routed as individual traces.</li>
+        <li><strong>USB-C power input</strong> with 5.1 kΩ CC pulldowns on both CC pins, so a standard charger or laptop port supplies 5 V.</li>
+        <li><strong>A separate power indicator LED</strong>, so the board shows it is alive even when the counter is reset and no output is asserted.</li>
       </ul>
       <p>
-        The silkscreen carries numbers 1 through 10 above the LEDs and labels both buttons, which
-        matters more than it sounds — a board where you have to consult the schematic to know which
-        button does what is a board you designed for yourself and nobody else.
+        The silkscreen numbers the LEDs 1 through 10 and labels both buttons, so nobody needs the
+        schematic in hand to use it.
       </p>
-    </section>
-
-    <section class="project-section">
-      <h2>Schematic</h2>
       <div class="project-img project-img-tall">
         <a href="../images/rng-schematic.svg" target="_blank">
           <img src="../images/rng-schematic.svg" alt="Full schematic of the Rev B random number generator board" />
         </a>
       </div>
       <p>
-        Full schematic — <a href="../images/rng-schematic.svg" target="_blank">open it full size</a> to zoom in.
+        Full schematic. <a href="../images/rng-schematic.svg" target="_blank">Open it full size</a> to zoom in.
       </p>
     </section>
 
     <section class="project-section">
-      <h2>Build Progress</h2>
+      <h2>Build Status</h2>
       <p>
-        The Rev B board is assembled — every part placed and soldered by hand, including the
-        16-pin CD4017, the NE555, and the edge-mounted USB-C connector. It's the first board in this
-        portfolio I've physically built rather than just designed.
+        The Rev B board is assembled, with every part placed and soldered by hand including the
+        16-pin CD4017 and the edge mounted USB-C connector. It is the first board in this portfolio I
+        built rather than only designed.
       </p>
       <p>
-        Electrical bring-up is still to come. First things to check: the 555's actual oscillation
-        frequency against the calculated value, that the 4017 advances cleanly on every edge without
-        double-clocking, and that the clock enable genuinely freezes the counter rather than letting
-        it drift.
+        Electrical bring-up is still to come. The first checks are the 555 oscillation frequency
+        against the calculated value, whether the 4017 advances cleanly on every edge without double
+        clocking, and whether the clock enable genuinely holds the counter rather than letting it
+        drift.
       </p>
     </section>
 
