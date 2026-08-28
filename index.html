@@ -91,8 +91,13 @@
     <div class="project-grid">
 
       <a href="projects/eink-weather-station.html" class="card">
-        <div class="card-thumb">
-          <img src="images/weather-board-angle.jpg" alt="Rev B.2 weather station PCB render" />
+        <div class="card-thumb card-thumb-code">
+<pre><span class="cc">// ESP32 + 4.2" e-paper, battery</span>
+AP2112K-3.3    250 mV dropout
+
+Sleep   55 uA Iq, ~4 months
+Charge  TP4056 500 mA, USB-C
+Board   80 x 60 mm, 2-layer</pre>
         </div>
         <div class="card-body">
           <h3>E-Ink Weather Station</h3>
@@ -102,6 +107,21 @@
             <li>ESP32</li>
             <li>PCB Design</li>
             <li>Power</li>
+          </ul>
+        </div>
+      </a>
+
+      <a href="projects/rng-pcb.html" class="card">
+        <div class="card-thumb">
+          <img src="images/rng-assembled.jpg" alt="Assembled Rev B random number generator board" />
+        </div>
+        <div class="card-body">
+          <h3>Random Number Generator PCB</h3>
+          <p>A digital die with no microcontroller: an NE555-clocked CD4017 latches 1 of 10 LEDs. 41 surface-mount parts on a 50 x 40 mm board, hand-soldered.</p>
+          <ul class="tags">
+            <li>KiCad</li>
+            <li>Digital Logic</li>
+            <li>SMT Assembly</li>
           </ul>
         </div>
       </a>
@@ -122,21 +142,6 @@ Board 78 x 16 mm, 2-layer</pre>
             <li>KiCad</li>
             <li>Power Electronics</li>
             <li>PCB Design</li>
-          </ul>
-        </div>
-      </a>
-
-      <a href="projects/rng-pcb.html" class="card">
-        <div class="card-thumb">
-          <img src="images/rng-board-angle.jpg" alt="Rev B random number generator PCB render" />
-        </div>
-        <div class="card-body">
-          <h3>Random Number Generator PCB</h3>
-          <p>A digital die with no microcontroller: an NE555-clocked CD4017 latches 1 of 10 LEDs. 41 surface-mount parts on a 50 x 40 mm board, hand-soldered.</p>
-          <ul class="tags">
-            <li>KiCad</li>
-            <li>Digital Logic</li>
-            <li>SMT Assembly</li>
           </ul>
         </div>
       </a>

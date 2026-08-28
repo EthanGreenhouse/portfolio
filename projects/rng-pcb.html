@@ -11,12 +11,12 @@
   <meta property="og:url" content="https://ethangreenhouse.com/projects/rng-pcb.html" />
   <meta property="og:title" content="Random Number Generator PCB - Ethan Greenhouse" />
   <meta property="og:description" content="A 41-component surface-mount board that latches 1 of 10 LEDs using an NE555-clocked CD4017 decade counter. No microcontroller." />
-  <meta property="og:image" content="https://ethangreenhouse.com/images/rng-board-angle.jpg" />
+  <meta property="og:image" content="https://ethangreenhouse.com/images/rng-assembled.jpg" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Random Number Generator PCB - Ethan Greenhouse" />
   <meta name="twitter:description" content="A 41-component surface-mount board that latches 1 of 10 LEDs using an NE555-clocked CD4017 decade counter. No microcontroller." />
-  <meta name="twitter:image" content="https://ethangreenhouse.com/images/rng-board-angle.jpg" />
+  <meta name="twitter:image" content="https://ethangreenhouse.com/images/rng-assembled.jpg" />
 
   <link rel="icon" type="image/png" href="../images/favicon.png" />
   <link rel="stylesheet" href="../style.css" />
@@ -39,7 +39,7 @@
 
     <header class="project-header">
       <h1>Random Number Generator PCB</h1>
-      <p class="project-date">August 2026 · Rev B · Boards in hand, assembly in progress</p>
+      <p class="project-date">August 2026 · Rev B · Assembled, bring-up pending</p>
       <ul class="tags">
         <li>KiCad</li>
         <li>Digital Logic</li>
@@ -49,7 +49,7 @@
     </header>
 
     <div class="project-hero-img">
-      <img src="../images/rng-board-angle.jpg" alt="3D render of the Rev B random number generator PCB with ten numbered LEDs and RESET and ROLL buttons" />
+      <img src="../images/rng-assembled.jpg" alt="Assembled Rev B random number generator board: ten numbered LEDs, CD4017 and NE555 in SOIC packages, RESET and ROLL buttons, and an edge-mounted USB-C connector" />
     </div>
 
     <section class="project-section">
@@ -105,9 +105,6 @@
         matters more than it sounds — a board where you have to consult the schematic to know which
         button does what is a board you designed for yourself and nobody else.
       </p>
-      <div class="project-img">
-        <img src="../images/rng-board-top.jpg" alt="Top-down render of the RNG board showing the ten numbered LEDs, the CD4017 and NE555, and the RESET and ROLL buttons" />
-      </div>
     </section>
 
     <section class="project-section">
@@ -125,25 +122,15 @@
     <section class="project-section">
       <h2>Build Progress</h2>
       <p>
-        The Rev B boards arrived and I'm hand-soldering them now. This is the first board in this
-        portfolio I'll have physically brought up myself, so the section below will fill in with
-        photographs of the real thing rather than renders.
+        The Rev B board is assembled — every part placed and soldered by hand, including the
+        16-pin CD4017, the NE555, and the edge-mounted USB-C connector. It's the first board in this
+        portfolio I've physically built rather than just designed.
       </p>
-      <div class="project-img-row">
-        <div class="project-img-placeholder">
-          Bare board — photo to be added
-        </div>
-        <div class="project-img-placeholder">
-          Populated board — photo to be added
-        </div>
-      </div>
-      <div class="project-img-placeholder">
-        NE555 clock output on the scope — trace to be added
-      </div>
       <p>
-        First things to check at bring-up: the 555's actual oscillation frequency against the
-        calculated value, that the 4017 advances cleanly on every edge without double-clocking, and
-        that the clock enable genuinely freezes the counter rather than letting it drift.
+        Electrical bring-up is still to come. First things to check: the 555's actual oscillation
+        frequency against the calculated value, that the 4017 advances cleanly on every edge without
+        double-clocking, and that the clock enable genuinely freezes the counter rather than letting
+        it drift.
       </p>
     </section>
 
