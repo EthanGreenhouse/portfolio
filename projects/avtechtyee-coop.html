@@ -43,7 +43,7 @@
       <ul class="tags">
         <li>Machine Vision</li>
         <li>Python</li>
-        <li>Gage R&amp;R</li>
+        <li>Quality Engineering</li>
         <li>Aerospace</li>
       </ul>
     </header>
@@ -51,14 +51,10 @@
     <section class="project-section">
       <h2>Overview</h2>
       <p>
-        Six months as a Quality Engineer at AvtechTyee, an aerospace manufacturer. I worked on two
+        During my 6 months as a Quality Engineer at AvtechTyee, an aerospace manufacturer, I worked on two
         projects. The first replaced manual incoming inspection of circuit board assemblies with an
         automated machine vision system. The second was a model that predicts which suppliers are
-        most likely to cause quality problems, built on seven years of historical data.
-      </p>
-      <p>
-        Everything below is described at the level of method and outcome. No supplier names,
-        internal documents, or operational data appear on this page.
+        most likely to cause quality problems, built on 7 years of historical data.
       </p>
     </section>
 
@@ -73,23 +69,20 @@
       <p>
         I set up a Keyence VS-series vision system to do the comparison automatically. The camera
         mounts on an adjustable arm over a fixed inspection stage, so board position and lighting stay
-        consistent between units. Each board type gets a program that captures a reference image and
+        consistent between units. Each board type gets a program that captures reference images and
         compares incoming units against it.
       </p>
       <p>
         Differences show up as a heat map over the board. A unit that matches the reference passes.
-        A unit with a missing component, a wrong orientation, or foreign material appears as a region
+        A unit with a defect such as missing component, backwards component, or foreign material appears as a region
         of disagreement, and the operator sees the location rather than just a pass or fail result.
       </p>
       <div class="project-img project-img-wide">
         <img src="../images/coop-vision-heatmap.jpg" alt="Side by side inspection results: a passing board outlined in green, and a failing board outlined in red with a heat map marking the region that differs from the reference" />
       </div>
       <p>
-        I programmed the system for 25+ board types, ran a Gage R&amp;R study to confirm the results
-        were repeatable rather than sensitive to setup, wrote the programming and operating guides,
-        and trained the inspectors to run and extend it themselves. The handover mattered as much as
-        the build. An inspection fixture only one person can program stops working the day that
-        person leaves.
+        I programmed the system for 25+ board types, wrote the programming and operating guides,
+        and trained the inspectors to run and extend it themselves. 
       </p>
     </section>
 
@@ -107,8 +100,8 @@
       </p>
       <p>
         That definition on its own produced a lot of noise. A supplier with zero reports in the past
-        three months and one in the next three is mathematically a large increase and operationally
-        nothing at all. Requiring a minimum count in the forward window removed most of those false
+        three months and one in the next three is mathematically a large increase but operationally
+        close to nothing at all. Requiring a minimum count in the forward window removed most of those false
         positives.
       </p>
 <pre><code># "Trend up" means future_avg &gt;= multiple * past_avg.
@@ -152,13 +145,9 @@ min_future_sum: int = 2</code></pre>
       <h2>Results</h2>
       <p>
         The top 5% of suppliers by predicted risk failed 1.6 times more often than a random
-        selection of the same size. That ratio is the number that decides whether the model is worth
-        running at all, since a model that cannot beat picking at random costs review time and
-        returns nothing.
-      </p>
-      <p>
-        I delivered it as a desktop tool with an Excel dashboard so the quality team could run it
-        monthly without touching Python. It is now used in monthly reviews covering 150+ suppliers.
+        selection of the same size. I delivered it as a desktop tool with an Excel dashboard while complying with IT policies 
+        so the quality team could run it monthly without touching Python. 
+        It is now used in monthly reviews covering 150+ suppliers.
       </p>
       <p>
         The vision system replaced manual incoming inspection across 25+ circuit board types, saving
