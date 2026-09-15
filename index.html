@@ -152,20 +152,20 @@ Board   80 x 60 mm, 2-layer</pre>
 
       <a href="projects/buck-converter.html" class="card">
         <div class="card-thumb card-thumb-code">
-<pre><span class="cc">// 12 V in, 5 V out, 3 A target</span>
-LM2596S-5      150 kHz switcher
+<pre><span class="cc">// 12 V in, 5 V out, 3 A, 150 kHz</span>
+LM2596S-5      SS54 freewheel
 
-L1    33 uH    D1    SS54 40V 5A
-C_IN  680 uF   C_OUT 220 uF
-Board 78 x 16 mm, 2-layer</pre>
+Efficiency  91.3%  (LTspice)
+Diode loss  0.90 W of 1.45 W
+Ripple      31 mV, CCM held</pre>
         </div>
         <div class="card-body">
-          <h3>12 V to 5 V Buck Converter PCB</h3>
-          <p>Switching regulator taking a 12 V barrel jack to 5 V USB-A at 3 A, sized around a 150 kHz LM2596S-5 to hold continuous conduction at full load.</p>
+          <h3>Asynchronous Buck Converter</h3>
+          <p>Switching regulator taking a 12 V barrel jack to 5 V USB-A at 3 A. Simulated in LTspice at 91.3% efficiency, with the catch diode as 62% of total loss.</p>
           <ul class="tags">
             <li>KiCad</li>
+            <li>LTspice</li>
             <li>Power Electronics</li>
-            <li>PCB Design</li>
           </ul>
         </div>
       </a>

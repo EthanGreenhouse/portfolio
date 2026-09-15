@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ethan Greenhouse - 12 V to 5 V Buck Converter PCB</title>
-  <meta name="description" content="A 78 x 16 mm switching regulator board built around a 150 kHz LM2596S-5, converting a 12 V barrel jack to a 5 V USB-A output at a 3 A load target." />
+  <title>Ethan Greenhouse - Asynchronous Buck Converter</title>
+  <meta name="description" content="A 78 x 16 mm asynchronous buck converter, 12 V to 5 V at 3 A and 150 kHz, simulated in LTspice at 91.3% efficiency with the catch diode as the dominant loss." />
   <link rel="canonical" href="https://ethangreenhouse.com/projects/buck-converter.html" />
 
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://ethangreenhouse.com/projects/buck-converter.html" />
-  <meta property="og:title" content="12 V to 5 V Buck Converter PCB - Ethan Greenhouse" />
+  <meta property="og:title" content="Asynchronous Buck Converter - Ethan Greenhouse" />
   <meta property="og:description" content="A 78 x 16 mm switching regulator board built around a 150 kHz LM2596S-5, converting a 12 V barrel jack to a 5 V USB-A output at a 3 A load target." />
   <meta property="og:image" content="https://ethangreenhouse.com/images/og-image.png" />
 
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="12 V to 5 V Buck Converter PCB - Ethan Greenhouse" />
+  <meta name="twitter:title" content="Asynchronous Buck Converter - Ethan Greenhouse" />
   <meta name="twitter:description" content="A 78 x 16 mm switching regulator board built around a 150 kHz LM2596S-5, converting a 12 V barrel jack to a 5 V USB-A output at a 3 A load target." />
   <meta name="twitter:image" content="https://ethangreenhouse.com/images/og-image.png" />
 
@@ -38,10 +38,11 @@
     <a href="../index.html#projects" class="back-link">← Back to Projects</a>
 
     <header class="project-header">
-      <h1>12 V to 5 V Buck Converter PCB</h1>
+      <h1>Asynchronous Buck Converter</h1>
       <p class="project-date">February 2026</p>
       <ul class="tags">
         <li>KiCad</li>
+        <li>LTspice</li>
         <li>Power Electronics</li>
         <li>PCB Design</li>
       </ul>
@@ -57,7 +58,9 @@
       </p>
       <p>
         The regulator is an LM2596S-5, a fixed 5 V step-down in TO-263 switching at 150 kHz and rated
-        for 3 A.
+        for 3 A. It is an asynchronous design, meaning a Schottky catch diode carries the freewheel
+        current rather than a second switching FET. That costs efficiency but removes the need for a
+        gate driver and a bootstrap supply.
       </p>
     </section>
 
@@ -66,8 +69,8 @@
       <p>
         A linear regulator doing 12 V to 5 V at 3 A dissipates (12 - 5) × 3 = 21 W in the package.
         That is not coolable on a board this size and caps efficiency near 42%. A buck converter
-        stores that energy in an inductor and delivers it to the load instead, running closer to 80%
-        efficient.
+        stores that energy in an inductor and delivers it to the load instead. Simulation puts this
+        design at 91.3%.
       </p>
       <p>
         The tradeoff is that a switcher is a layout problem as much as a schematic problem. Every
@@ -106,10 +109,33 @@
     </section>
 
     <section class="project-section">
+      <h2>Simulation</h2>
+      <p>
+        I modelled the converter in LTspice as an open-loop, fixed-duty stage: an ideal high side
+        switch, the SS54 as the freewheel diode, and the real parasitics that matter, 50 mΩ of
+        inductor series resistance and 50 mΩ of output capacitor ESR. Measurements are averaged over
+        the last millisecond of a 5 ms transient, once the output has settled.
+      </p>
+      <ul>
+        <li><strong>91.3% efficiency</strong> at the full 3 A load. 16.64 W in, 15.19 W out.</li>
+        <li><strong>The catch diode is 62% of the total loss</strong>, 0.90 W of 1.45 W. That is the price of an asynchronous design, and it is the first thing a synchronous FET would recover.</li>
+        <li><strong>Inductor loss is 0.46 W</strong>, another 32%, which leaves only about 6% in the switch and capacitor ESR combined.</li>
+        <li><strong>Inductor current never reaches zero.</strong> Ripple is 0.63 A peak to peak with a minimum of 2.71 A, so conduction stays continuous at full load, which is what the 33 µH was sized for.</li>
+        <li><strong>Output ripple is 31 mV</strong> on a 5.03 V rail.</li>
+      </ul>
+      <p>
+        The loss breakdown is the useful part. Knowing the diode dominates tells you where a Rev B
+        would go, and it is a better answer than assuming the regulator itself is the problem.
+      </p>
+    </section>
+
+    <section class="project-section">
       <h2>Status</h2>
       <p>
-        The schematic and layout are complete in KiCad. The board has not been fabricated or brought
-        up, so every figure on this page is a design value rather than a measurement. 
+        The schematic and layout are complete in KiCad and the design is simulated. The board has not
+        been fabricated, so the figures above are simulated rather than measured. Once built, the
+        things worth putting on a scope are the switch node waveform, output ripple at full load, and
+        efficiency across the load range against the 91.3% the model predicts.
       </p>
     </section>
 
