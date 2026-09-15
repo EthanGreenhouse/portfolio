@@ -11,12 +11,12 @@
   <meta property="og:url" content="https://ethangreenhouse.com/projects/eink-weather-station.html" />
   <meta property="og:title" content="E-Ink Weather Station - Ethan Greenhouse" />
   <meta property="og:description" content="Battery powered ESP32 PCB driving a 4.2 inch e-paper display, with a regulator swap that cut dropout from 1.1 V to 250 mV and a rebuilt antenna keep-out." />
-  <meta property="og:image" content="https://ethangreenhouse.com/images/og-image.png" />
+  <meta property="og:image" content="https://ethangreenhouse.com/images/weather-render.jpg" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="E-Ink Weather Station - Ethan Greenhouse" />
   <meta name="twitter:description" content="Battery powered ESP32 PCB driving a 4.2 inch e-paper display, with a regulator swap that cut dropout from 1.1 V to 250 mV and a rebuilt antenna keep-out." />
-  <meta name="twitter:image" content="https://ethangreenhouse.com/images/og-image.png" />
+  <meta name="twitter:image" content="https://ethangreenhouse.com/images/weather-render.jpg" />
 
   <link rel="icon" type="image/png" href="../images/favicon.png" />
   <link rel="stylesheet" href="../style.css" />
@@ -47,6 +47,10 @@
         <li>Power</li>
       </ul>
     </header>
+
+    <div class="project-hero-img">
+      <img src="../images/weather-render.jpg" alt="3D render of the Rev B.2 weather station board, showing the ESP32 module with its antenna at the top edge, the USB-C connector at the bottom, and the programming, display, and battery headers down the right side" />
+    </div>
 
     <section class="project-section">
       <h2>Overview</h2>
@@ -99,6 +103,16 @@
         and relocates the display header. I verified the result against the raw board geometry rather
         than relying on DRC. Across the antenna window, copper is absent from the board edge down to
         the module's own pad row, with no tracks, vias, or foreign pads.
+      </p>
+      <div class="project-img project-img-auto">
+        <a href="../images/weather-layout.png" target="_blank">
+          <img src="../images/weather-layout.png" alt="Rev B.2 board layout in KiCad, showing the hatched antenna keep-out zone extending past the top board edge with the ESP32 module antenna flush against the outline" />
+        </a>
+      </div>
+      <p>
+        Rev B.2 layout. The hatched keep-out zone sits almost entirely off the board, which is the
+        whole point of moving the module to the edge.
+        <a href="../images/weather-layout.png" target="_blank">Open it full size</a> to zoom in.
       </p>
     </section>
 

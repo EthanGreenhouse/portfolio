@@ -187,15 +187,17 @@
   height: 100%;
 }
 
-/* Taller container for dense artwork like full schematics */
+/* Taller container for the schematic SVGs. They size by their mm intrinsic
+   dimensions rather than pixels, so height:auto renders them smaller than a
+   fixed container does. */
 .project-img-tall {
   height: 560px;
 }
 
-/* Wide images size to their own aspect ratio instead of a fixed height, so
-   there is no dead space above or below them. */
-.project-img-wide,
-.project-img-wide img {
+/* Images that size to their own aspect ratio instead of a fixed container
+   height, so there is no dead space above or below them. */
+.project-img-auto,
+.project-img-auto img {
   height: auto;
 }
 
@@ -226,8 +228,8 @@
 
   /* Re-assert auto height; the .project-img rule above would otherwise win
      on source order at equal specificity. */
-  .project-img-wide,
-  .project-img-wide img {
+  .project-img-auto,
+  .project-img-auto img {
     height: auto;
   }
 
