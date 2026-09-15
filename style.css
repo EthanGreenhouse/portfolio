@@ -267,6 +267,8 @@ nav ul a:hover {
 }
 
 .card-thumb {
+  position: relative;
+  overflow: hidden;
   width: 100%;
   aspect-ratio: 16 / 9;
   background: var(--thumb-bg);
@@ -277,7 +279,13 @@ nav ul a:hover {
   font-size: 0.85rem;
 }
 
+/* Absolutely positioned so the image cannot contribute intrinsic height.
+   With height:100% alone, a percentage against an aspect-ratio-derived
+   height is indefinite, so any image taller than 16:9 fell back to its
+   own size and stretched the thumbnail out of ratio. */
 .card-thumb img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
