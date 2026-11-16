@@ -39,7 +39,7 @@
 
     <header class="project-header">
       <h1>ECG Acquisition Circuit</h1>
-      <p class="project-date">November 2025 – December 2025</p>
+      <p class="project-date">November 2025 – December 2025 · Circuits and Signals Lab</p>
       <ul class="tags">
         <li>Analog Design</li>
         <li>MATLAB</li>
@@ -83,8 +83,8 @@
       </p>
       <p>
         Common mode rejection is what really matters for ECG. I tested it by feeding a 500 mV sine
-        wave into both inputs at the same time and measuring the residual output of 3.2 mV. That
-        gave a measured CMRR of 70.5 dB. The AD627 datasheet specs 80 to 85 dB, so there was some
+        wave at 150 Hz into both inputs at the same time and measuring the residual output of
+        3.2 mV. That gave a measured CMRR of 70.5 dB at that frequency. The AD627 datasheet specs 80 to 85 dB, so there was some
         margin lost to electrode impedance mismatch and breadboard layout, but it was still more
         than enough to pull a clean QRS complex out of ambient noise.
       </p>
@@ -123,7 +123,8 @@
     <section class="project-section">
       <h2>Results</h2>
       <p>
-        I recorded five 10-second clips under different conditions to validate the system:
+        I recorded five 10-second clips across rest, exercise, and deep breathing to validate the
+        system, with heart rates landing between 65 and 95 BPM:
       </p>
       <ul>
         <li>Resting: 72 BPM</li>
@@ -135,8 +136,7 @@
       <p>
         The exercise clip showed the expected elevated heart rate, and the movement clip confirmed
         the HPF was doing its job by attenuating most of the low-frequency drift. R-peak detection
-        ran cleanly across all five clips. The post-exercise recording was measured at 91.9 BPM in
-        MATLAB.
+        ran cleanly across all five clips.
       </p>
       <div class="project-img">
         <img src="../images/ecg-rpeaks.jpg" alt="MATLAB plot of ECG with detected R-peaks at 91.9 BPM" />

@@ -58,6 +58,17 @@
   display: block;
 }
 
+/* ── Archived page notice ── */
+.archive-note {
+  margin-bottom: 2.5rem;
+  padding: 0.7rem 1rem;
+  border-left: 3px solid var(--border);
+  background: var(--surface);
+  border-radius: var(--radius);
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
 /* ── Sections ── */
 .project-section {
   margin-bottom: 3rem;
