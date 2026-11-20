@@ -19,6 +19,9 @@
   <meta name="twitter:image" content="https://ethangreenhouse.com/images/weather-render.jpg" />
 
   <link rel="icon" type="image/png" href="../images/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" />
   <link rel="stylesheet" href="../style.css" />
   <link rel="stylesheet" href="../project.css" />
 </head>
@@ -34,12 +37,15 @@
   </nav>
 
   <main class="project-page">
+    <aside class="project-rail" aria-label="Sections"></aside>
+
+    <div class="project-body">
 
     <a href="../index.html#projects" class="back-link">← Back to Projects</a>
 
     <header class="project-header">
       <h1>E-Ink Weather Station</h1>
-      <p class="project-date">March 2026 – Present · Rev B.2 frozen August 2026 · <a href="https://github.com/EthanGreenhouse/eink-weather-station" target="_blank">Source on GitHub</a></p>
+      <p class="project-date meta-row"><span>March 2026 – Present</span><span>Rev B.2 frozen August 2026</span><a href="https://github.com/EthanGreenhouse/eink-weather-station" target="_blank">Source on GitHub</a></p>
       <ul class="tags">
         <li>KiCad</li>
         <li>ESP32</li>
@@ -49,7 +55,9 @@
     </header>
 
     <div class="project-hero-img">
-      <img src="../images/weather-render.jpg" alt="3D render of the Rev B.2 weather station board, showing the ESP32 module with its antenna at the top edge, the USB-C connector at the bottom, and the programming, display, and battery headers down the right side" />
+      <a href="../images/weather-render.jpg" target="_blank">
+        <img src="../images/weather-render.jpg" alt="3D render of the Rev B.2 weather station board, showing the ESP32 module with its antenna at the top edge, the USB-C connector at the bottom, and the programming, display, and battery headers down the right side" />
+      </a>
     </div>
 
     <section class="project-section">
@@ -68,7 +76,7 @@
     </section>
 
     <section class="project-section">
-      <h2>Regulator Selection</h2>
+      <h2>Regulator selection</h2>
       <p>
         Rev A used an AMS1117-3.3, which has about 1.1 V of typical dropout and draws roughly 5 mA
         quiescent. A single lithium cell runs from 4.2 V down to 3.0 V, so after dropout the 3.3 V
@@ -90,7 +98,7 @@
     </section>
 
     <section class="project-section">
-      <h2>Antenna Keep-Out</h2>
+      <h2>Antenna keep-out</h2>
       <p>
         In Rev A the ESP32 module sat mid-board with its antenna pointing inward. The footprint
         keep-out carved a 48 × 21 mm strip of bare FR4 through the middle of the board, about 37% of
@@ -117,7 +125,7 @@
     </section>
 
     <section class="project-section">
-      <h2>Power Path</h2>
+      <h2>Power path</h2>
       <p>
         USB-C feeds a TP4056 charger set to 500 mA by a 2.4 kΩ program resistor, which is 0.25 C into
         the 2000 mAh pack. Both CC pins carry their own 5.1 kΩ pulldown.
@@ -180,12 +188,13 @@
         module's level translator draws, since it is permanently powered with no way to shut it off.
       </p>
     </section>
-
+    </div>
   </main>
 
   <footer>
-    <p>Ethan Greenhouse · <a href="mailto:greenhouse.e@northeastern.edu">greenhouse.e@northeastern.edu</a></p>
+    <p class="meta-row"><span>Ethan Greenhouse</span><a href="mailto:greenhouse.e@northeastern.edu">greenhouse.e@northeastern.edu</a></p>
   </footer>
 
+  <script src="../page.js" defer></script>
 </body>
 </html>

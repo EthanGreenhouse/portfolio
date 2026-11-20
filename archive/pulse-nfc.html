@@ -20,6 +20,9 @@
   <meta name="twitter:image" content="https://ethangreenhouse.com/images/og-image.png" />
 
   <link rel="icon" type="image/png" href="../images/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" />
   <link rel="stylesheet" href="../style.css" />
   <link rel="stylesheet" href="../project.css" />
 </head>
@@ -35,12 +38,15 @@
   </nav>
 
   <main class="project-page">
+    <aside class="project-rail" aria-label="Sections"></aside>
+
+    <div class="project-body">
 
     <a href="../index.html" class="back-link">← Back to Home</a>
 
     <header class="project-header">
       <h1>Pulse: Metal NFC Business Card</h1>
-      <p class="project-date">October 2024 – December 2024</p>
+      <p class="project-date meta-row"><span>October 2024 – December 2024</span></p>
       <ul class="tags">
         <li>NFC</li>
         <li>AutoCAD</li>
@@ -53,7 +59,9 @@
     </p>
 
     <div class="project-hero-img">
-      <img src="../images/pulse-hero.jpg" alt="Pulse metal NFC business card" />
+      <a href="../images/pulse-hero.jpg" target="_blank">
+        <img src="../images/pulse-hero.jpg" alt="Pulse metal NFC business card" />
+      </a>
     </div>
 
     <section class="project-section">
@@ -67,7 +75,7 @@
     </section>
 
     <section class="project-section">
-      <h2>The Problem with NFC on Metal</h2>
+      <h2>The problem with NFC on metal</h2>
       <p>
         NFC relies on inductive coupling between the reader and the card's antenna. Metal surfaces
         interfere with this by generating eddy currents that cancel the magnetic field before it reaches
@@ -82,7 +90,7 @@
     </section>
 
     <section class="project-section">
-      <h2>Design & Fabrication</h2>
+      <h2>Design and fabrication</h2>
       <p>
         The layout was designed in AutoCAD at standard credit card dimensions (85.6 × 54mm). The front featured
         a crescent moon motif and my name. The back had additional crescent moon designs and an area for the NFC.
@@ -100,12 +108,13 @@
         thinner custom-cut ferrite layer to reduce overall card thickness.
       </p>
     </section>
-
+    </div>
   </main>
 
   <footer>
-    <p>Ethan Greenhouse · <a href="mailto:greenhouse.e@northeastern.edu">greenhouse.e@northeastern.edu</a></p>
+    <p class="meta-row"><span>Ethan Greenhouse</span><a href="mailto:greenhouse.e@northeastern.edu">greenhouse.e@northeastern.edu</a></p>
   </footer>
 
+  <script src="../page.js" defer></script>
 </body>
 </html>

@@ -20,6 +20,9 @@
   <meta name="twitter:image" content="https://ethangreenhouse.com/images/og-image.png" />
 
   <link rel="icon" type="image/png" href="../images/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" />
   <link rel="stylesheet" href="../style.css" />
   <link rel="stylesheet" href="../project.css" />
 </head>
@@ -35,12 +38,15 @@
   </nav>
 
   <main class="project-page">
+    <aside class="project-rail" aria-label="Sections"></aside>
+
+    <div class="project-body">
 
     <a href="../index.html" class="back-link">← Back to Home</a>
 
     <header class="project-header">
       <h1>Rocket Avionics Firmware</h1>
-      <p class="project-date">September 2025 – November 2025</p>
+      <p class="project-date meta-row"><span>September 2025 – November 2025</span></p>
       <ul class="tags">
         <li>Embedded C++</li>
         <li>I2C</li>
@@ -80,7 +86,7 @@
     </section>
 
     <section class="project-section">
-      <h2>IMU Driver</h2>
+      <h2>IMU driver</h2>
       <p>
         The IMU driver talks to the ICM-20602 over I2C at 400 kHz. To read a full sample, the
         driver writes the accelerometer register address (<code>ACCEL_XOUT_H</code>), then requests
@@ -116,7 +122,7 @@ gyroData[2]  = (int16_t)((buf[12] &lt;&lt; 8) | buf[13]);</code></pre>
     </section>
 
     <section class="project-section">
-      <h2>Flash Logging</h2>
+      <h2>Flash logging</h2>
       <p>
         The S25FL512 driver handles SPI writes to flash in 512-byte page chunks, with a serial CLI
         that exposes erase, offload, and print commands for post-flight data recovery. Each log
@@ -128,7 +134,7 @@ gyroData[2]  = (int16_t)((buf[12] &lt;&lt; 8) | buf[13]);</code></pre>
     </section>
 
     <section class="project-section">
-      <h2>Event Detection</h2>
+      <h2>Event detection</h2>
       <p>
         The hardest part of the project was not reading the sensors, it was deciding what counted as
         a real flight event. The IMU is noisy enough that readings jump around even sitting still on
@@ -151,7 +157,7 @@ gyroData[2]  = (int16_t)((buf[12] &lt;&lt; 8) | buf[13]);</code></pre>
     </section>
 
     <section class="project-section">
-      <h2>Main Loop</h2>
+      <h2>Main loop</h2>
       <p>
         The main loop runs at 50 Hz, scheduled with a simple <code>tickEndTime</code> guard. Every
         20 ms it reads all sensors, computes altitude from pressure, packs the record, runs the CLI
@@ -178,12 +184,13 @@ gyroData[2]  = (int16_t)((buf[12] &lt;&lt; 8) | buf[13]);</code></pre>
     runCLI();
 }</code></pre>
     </section>
-
+    </div>
   </main>
 
   <footer>
-    <p>Ethan Greenhouse · <a href="mailto:greenhouse.e@northeastern.edu">greenhouse.e@northeastern.edu</a></p>
+    <p class="meta-row"><span>Ethan Greenhouse</span><a href="mailto:greenhouse.e@northeastern.edu">greenhouse.e@northeastern.edu</a></p>
   </footer>
 
+  <script src="../page.js" defer></script>
 </body>
 </html>

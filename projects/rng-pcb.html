@@ -19,6 +19,9 @@
   <meta name="twitter:image" content="https://ethangreenhouse.com/images/rng-assembled.jpg" />
 
   <link rel="icon" type="image/png" href="../images/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" />
   <link rel="stylesheet" href="../style.css" />
   <link rel="stylesheet" href="../project.css" />
 </head>
@@ -34,12 +37,15 @@
   </nav>
 
   <main class="project-page">
+    <aside class="project-rail" aria-label="Sections"></aside>
+
+    <div class="project-body">
 
     <a href="../index.html#projects" class="back-link">← Back to Projects</a>
 
     <header class="project-header">
       <h1>Random Number Generator PCB</h1>
-      <p class="project-date">August 2026 · Rev B · <a href="https://github.com/EthanGreenhouse/rng-pcb" target="_blank">Source on GitHub</a></p>
+      <p class="project-date meta-row"><span>August 2026</span><span>Rev B</span><a href="https://github.com/EthanGreenhouse/rng-pcb" target="_blank">Source on GitHub</a></p>
       <ul class="tags">
         <li>KiCad</li>
         <li>Digital Logic</li>
@@ -49,7 +55,9 @@
     </header>
 
     <div class="project-hero-img">
-      <img src="../images/rng-assembled.jpg" alt="Assembled Rev B random number generator board with ten numbered LEDs, the CD4017 and NE555, RESET and ROLL buttons, and an edge mounted USB-C connector" />
+      <a href="../images/rng-assembled.jpg" target="_blank">
+        <img src="../images/rng-assembled.jpg" alt="Assembled Rev B random number generator board with ten numbered LEDs, the CD4017 and NE555, RESET and ROLL buttons, and an edge mounted USB-C connector" />
+      </a>
     </div>
 
     <section class="project-section">
@@ -66,7 +74,7 @@
     </section>
 
     <section class="project-section">
-      <h2>How It Works</h2>
+      <h2>How it works</h2>
       <p>
         An NE555 in astable mode runs as a free running clock and drives a CD4017 decade counter. The
         4017 has ten outputs and asserts exactly one at a time, advancing on each clock edge, so ten
@@ -83,10 +91,19 @@
         It is not cryptographic randomness, since the counter is fully deterministic, but for picking
         a number from one to ten it is indistinguishable from it.
       </p>
+      <div class="project-img project-img-auto">
+        <a href="../images/rng-timing.svg" target="_blank">
+          <img src="../images/rng-timing.svg" alt="Timing diagram. The NE555 clock runs continuously. While clock enable is held low by the ROLL button the CD4017 asserts Q0 through Q9 in turn, one per clock edge, wrapping back to Q0. When clock enable goes high the counter stops and holds whichever output was asserted." />
+        </a>
+      </div>
+      <p class="figure-note">
+        One pass of the counter. Each clock edge moves the asserted output along by one, and when
+        ROLL is released the clock enable goes high and the counter holds wherever it had got to.
+      </p>
     </section>
 
     <section class="project-section">
-      <h2>Design Notes</h2>
+      <h2>Design notes</h2>
       <ul>
         <li><strong>1 kΩ series resistors</strong> on all ten LEDs. With a 5 V rail and a red LED forward drop near 2 V, that is about 3 mA each, dim enough to be comfortable indoors and low enough to keep total draw down while the counter is sweeping.</li>
         <li><strong>100 nF decoupling at both ICs.</strong> The 555 injects current spikes onto the supply rail when its output stage switches, and the 4017 shares that rail. Local decoupling at each package keeps that from showing up as false clocking.</li>
@@ -117,7 +134,7 @@
     </section>
 
     <section class="project-section">
-      <h2>Build Status</h2>
+      <h2>Build status</h2>
       <p>
         The Rev B board is assembled, with every part placed and soldered by hand including the
         16-pin CD4017 and the edge mounted USB-C connector. It is the first board I
@@ -129,12 +146,13 @@
         rework, no cut traces.
       </p>
     </section>
-
+    </div>
   </main>
 
   <footer>
-    <p>Ethan Greenhouse · <a href="mailto:greenhouse.e@northeastern.edu">greenhouse.e@northeastern.edu</a></p>
+    <p class="meta-row"><span>Ethan Greenhouse</span><a href="mailto:greenhouse.e@northeastern.edu">greenhouse.e@northeastern.edu</a></p>
   </footer>
 
+  <script src="../page.js" defer></script>
 </body>
 </html>

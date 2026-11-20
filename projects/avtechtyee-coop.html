@@ -19,6 +19,9 @@
   <meta name="twitter:image" content="https://ethangreenhouse.com/images/coop-vision-heatmap.jpg" />
 
   <link rel="icon" type="image/png" href="../images/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" />
   <link rel="stylesheet" href="../style.css" />
   <link rel="stylesheet" href="../project.css" />
 </head>
@@ -34,12 +37,15 @@
   </nav>
 
   <main class="project-page">
+    <aside class="project-rail" aria-label="Sections"></aside>
+
+    <div class="project-body">
 
     <a href="../index.html#experience" class="back-link">← Back to Home</a>
 
     <header class="project-header">
       <h1>Quality Engineering Co-op</h1>
-      <p class="project-date">AvtechTyee · January 2026 – June 2026</p>
+      <p class="project-date meta-row"><span>AvtechTyee</span><span>January 2026 – June 2026</span></p>
       <ul class="tags">
         <li>Machine Vision</li>
         <li>Python</li>
@@ -59,7 +65,7 @@
     </section>
 
     <section class="project-section">
-      <h2>Machine Vision Inspection</h2>
+      <h2>Machine vision inspection</h2>
       <p>
         Incoming inspection of circuit board assemblies was manual. An inspector compared each board
         against documentation by eye, which is slow and depends on who is working that day. A board
@@ -78,7 +84,9 @@
         of disagreement, and the operator sees the location rather than just a pass or fail result.
       </p>
       <div class="project-img project-img-auto">
-        <img src="../images/coop-vision-heatmap.jpg" alt="Side by side inspection results: a passing board outlined in green, and a failing board outlined in red with a heat map marking the region that differs from the reference" />
+        <a href="../images/coop-vision-heatmap.jpg" target="_blank">
+          <img src="../images/coop-vision-heatmap.jpg" alt="Side by side inspection results: a passing board outlined in green, and a failing board outlined in red with a heat map marking the region that differs from the reference" />
+        </a>
       </div>
       <p>
         I programmed the system for 25+ board types, wrote two Oracle Agile PLM work instructions
@@ -89,7 +97,7 @@
     </section>
 
     <section class="project-section">
-      <h2>Supplier Risk Model</h2>
+      <h2>Supplier risk model</h2>
       <p>
         The second project was predicting supplier quality problems before they turned into
         nonconformance reports, using seven years of history at supplier-month granularity.
@@ -148,11 +156,13 @@ min_future_sum: int = 2</code></pre>
         <a href="https://github.com/EthanGreenhouse/supplier-risk-model" target="_blank">supplier-risk-model</a>.
       </p>
     </section>
+    </div>
   </main>
 
   <footer>
-    <p>Ethan Greenhouse · <a href="mailto:greenhouse.e@northeastern.edu">greenhouse.e@northeastern.edu</a></p>
+    <p class="meta-row"><span>Ethan Greenhouse</span><a href="mailto:greenhouse.e@northeastern.edu">greenhouse.e@northeastern.edu</a></p>
   </footer>
 
+  <script src="../page.js" defer></script>
 </body>
 </html>

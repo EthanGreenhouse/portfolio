@@ -20,6 +20,9 @@
   <meta name="twitter:image" content="https://ethangreenhouse.com/images/og-image.png" />
 
   <link rel="icon" type="image/png" href="../images/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" />
   <link rel="stylesheet" href="../style.css" />
   <link rel="stylesheet" href="../project.css" />
 </head>
@@ -35,12 +38,15 @@
   </nav>
 
   <main class="project-page">
+    <aside class="project-rail" aria-label="Sections"></aside>
+
+    <div class="project-body">
 
     <a href="../index.html" class="back-link">← Back to Home</a>
 
     <header class="project-header">
       <h1>Laser Maze Museum Exhibit</h1>
-      <p class="project-date">January 2025 – April 2025 · <a href="https://sites.google.com/view/lasermaze/home" target="_blank">Project site</a></p>
+      <p class="project-date meta-row"><span>January 2025 – April 2025</span><a href="https://sites.google.com/view/lasermaze/home" target="_blank">Project site</a></p>
       <ul class="tags">
         <li>Arduino</li>
         <li>C++</li>
@@ -55,7 +61,9 @@
     </p>
 
     <div class="project-hero-img">
-      <img src="../images/laser-maze-team.jpg" alt="Team Laser at the Boston Children's Museum" />
+      <a href="../images/laser-maze-team.jpg" target="_blank">
+        <img src="../images/laser-maze-team.jpg" alt="Team Laser at the Boston Children's Museum" />
+      </a>
     </div>
 
     <section class="project-section">
@@ -84,12 +92,14 @@
         is something I'd address in a future revision with a more dimensionally stable material.
       </p>
       <div class="project-img">
-        <img src="../images/laser-maze-enclosure.jpg" alt="Laser-cut MDF maze enclosure painted matte black" />
+        <a href="../images/laser-maze-enclosure.jpg" target="_blank">
+          <img src="../images/laser-maze-enclosure.jpg" alt="Laser-cut MDF maze enclosure painted matte black" />
+        </a>
       </div>
     </section>
 
     <section class="project-section">
-      <h2>Mirror Stands</h2>
+      <h2>Mirror stands</h2>
       <p>
         Seven mirror stands were designed in SolidWorks and 3D printed in PLA. Each stand holds a small
         glass mirror at a fixed angle and has a magnetic base that snaps into the pegboard holes. The
@@ -97,7 +107,9 @@
         them manually, which kept gameplay moving.
       </p>
       <div class="project-img">
-        <img src="../images/laser-maze-solidworks.jpg" alt="SolidWorks model of the 3D-printed mirror stand" />
+        <a href="../images/laser-maze-solidworks.jpg" target="_blank">
+          <img src="../images/laser-maze-solidworks.jpg" alt="SolidWorks model of the 3D-printed mirror stand" />
+        </a>
       </div>
     </section>
 
@@ -113,12 +125,14 @@
         positives during early testing.
       </p>
       <div class="project-img">
-        <img src="../images/laser-maze-flowchart.jpg" alt="Detection logic flowchart" />
+        <a href="../images/laser-maze-flowchart.jpg" target="_blank">
+          <img src="../images/laser-maze-flowchart.jpg" alt="Detection logic flowchart" />
+        </a>
       </div>
     </section>
 
     <section class="project-section">
-      <h2>Museum Deployment</h2>
+      <h2>Museum deployment</h2>
       <p>
         The game ran at Boston Children's Museum and was played by over 100 visitors. We recorded
         data on 63 of them during the testing window, since we were not able to observe every play
@@ -127,7 +141,9 @@
         out unexpected solutions using more mirrors than necessary.
       </p>
       <div class="project-img">
-        <img src="../images/laser-maze-gameplay.jpg" alt="Mirror stands and laser beam on the maze board" />
+        <a href="../images/laser-maze-gameplay.jpg" target="_blank">
+          <img src="../images/laser-maze-gameplay.jpg" alt="Mirror stands and laser beam on the maze board" />
+        </a>
       </div>
     </section>
 
@@ -139,10 +155,14 @@
       </p>
       <div class="project-img-row">
         <div class="project-img">
-          <img src="../images/laser-maze-completion.jpg" alt="Completion rate pie chart: 88.9% successful" />
+          <a href="../images/laser-maze-completion.jpg" target="_blank">
+            <img src="../images/laser-maze-completion.jpg" alt="Completion rate pie chart: 88.9% successful" />
+          </a>
         </div>
         <div class="project-img">
-          <img src="../images/laser-maze-mirrors.jpg" alt="Distribution of effective mirrors used per attempt" />
+          <a href="../images/laser-maze-mirrors.jpg" target="_blank">
+            <img src="../images/laser-maze-mirrors.jpg" alt="Distribution of effective mirrors used per attempt" />
+          </a>
         </div>
       </div>
       <p>
@@ -151,12 +171,13 @@
         and a slightly smaller maze grid would address both in a future iteration.
       </p>
     </section>
-
+    </div>
   </main>
 
   <footer>
-    <p>Ethan Greenhouse · <a href="mailto:greenhouse.e@northeastern.edu">greenhouse.e@northeastern.edu</a></p>
+    <p class="meta-row"><span>Ethan Greenhouse</span><a href="mailto:greenhouse.e@northeastern.edu">greenhouse.e@northeastern.edu</a></p>
   </footer>
 
+  <script src="../page.js" defer></script>
 </body>
 </html>

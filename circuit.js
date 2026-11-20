@@ -22,11 +22,14 @@
   var reduced = window.matchMedia &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Palette, kept in sync with style.css
-  var BG = '#f5f0e6';
+  // Palette, kept in sync with style.css. The board greens live here and
+  // nowhere else on the site; the rest of the page is paper and copper.
+  var BG = '#faf8f5';
   var FRONT = '#4e9785';  // front copper
-  var BACK = '#3a7264';   // back copper, a shade down so the layers read apart
-  var ALPHA = 0.5;        // held back so the hero copy stays dominant
+  var BACK = '#2f6557';   // back copper. Same value as --accent: the one
+                          //   green on the site, used for the board and for
+                          //   anything you can click.
+  var ALPHA = 0.72;       // reads as a board rather than as texture
 
   // Physics
   var REACH = 78;        // px, how far the cursor's push carries

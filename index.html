@@ -20,6 +20,9 @@
   <meta name="twitter:image" content="https://ethangreenhouse.com/images/og-image.png" />
 
   <link rel="icon" type="image/png" href="images/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" />
   <link rel="stylesheet" href="style.css" />
 
   <script type="application/ld+json">
@@ -76,20 +79,19 @@
     <div class="hero-content">
       <div class="hero-text">
         <h1>Ethan Greenhouse</h1>
-        <p class="tagline">Electrical Engineering Student · Northeastern University · Class of 2028</p>
+        <p class="tagline meta-row"><span>Electrical Engineering Student</span><span>Northeastern University</span><span>Class of 2028</span></p>
         <p class="bio">
           I design printed circuit boards, from schematic capture through layout and DFM to a fabricated board I assemble and bring up myself. Most recently a Quality Engineer co-op at AvtechTyee, working on circuit board inspection in an aerospace supply chain.
         </p>
-        <a href="#projects" class="btn">View My Work</a>
       </div>
       <div class="hero-photo">
         <img src="images/profile.jpg" alt="Ethan Greenhouse" />
       </div>
     </div>
-    <div class="scroll-hint">
-      <span>Projects</span>
-      <div class="arrow">↓</div>
-    </div>
+    <a href="#experience" class="scroll-hint">
+      <span>Experience</span>
+      <span class="arrow" aria-hidden="true">↓</span>
+    </a>
   </section>
 
   <!-- EXPERIENCE -->
@@ -97,7 +99,7 @@
     <h2>Experience</h2>
     <a href="projects/avtechtyee-coop.html" class="experience-card">
       <div class="experience-role">Quality Engineer Co-op</div>
-      <div class="experience-meta">AvtechTyee · January 2026 – June 2026</div>
+      <div class="experience-meta meta-row"><span class="org">AvtechTyee</span><span>January 2026 – June 2026</span></div>
       <p class="experience-body">
         Replaced manual incoming inspection of circuit board assemblies with a Keyence machine vision
         system covering 25+ board types, saving an estimated $100K per year. Built a calibrated
@@ -189,7 +191,7 @@ Ripple      31 mV, CCM held</pre>
 
   <!-- FOOTER -->
   <footer>
-    <p>Ethan Greenhouse · <a href="mailto:greenhouse.e@northeastern.edu">greenhouse.e@northeastern.edu</a></p>
+    <p class="meta-row"><span>Ethan Greenhouse</span><a href="mailto:greenhouse.e@northeastern.edu">greenhouse.e@northeastern.edu</a></p>
   </footer>
 
   <script src="circuit.js" defer></script>

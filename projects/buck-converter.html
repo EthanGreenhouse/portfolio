@@ -19,6 +19,9 @@
   <meta name="twitter:image" content="https://ethangreenhouse.com/images/og-image.png" />
 
   <link rel="icon" type="image/png" href="../images/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" />
   <link rel="stylesheet" href="../style.css" />
   <link rel="stylesheet" href="../project.css" />
 </head>
@@ -34,12 +37,15 @@
   </nav>
 
   <main class="project-page">
+    <aside class="project-rail" aria-label="Sections"></aside>
+
+    <div class="project-body">
 
     <a href="../index.html#projects" class="back-link">← Back to Projects</a>
 
     <header class="project-header">
       <h1>Asynchronous Buck Converter</h1>
-      <p class="project-date">February 2026 · <a href="https://github.com/EthanGreenhouse/buck-converter" target="_blank">Source on GitHub</a></p>
+      <p class="project-date meta-row"><span>February 2026</span><a href="https://github.com/EthanGreenhouse/buck-converter" target="_blank">Source on GitHub</a></p>
       <ul class="tags">
         <li>KiCad</li>
         <li>LTspice</li>
@@ -65,7 +71,7 @@
     </section>
 
     <section class="project-section">
-      <h2>Why a Switching Regulator</h2>
+      <h2>Why a switching regulator</h2>
       <p>
         A linear regulator doing 12 V to 5 V at 3 A dissipates (12 - 5) × 3 = 21 W in the package.
         That is not coolable on a board this size and caps efficiency near 42%. A buck converter
@@ -80,7 +86,7 @@
     </section>
 
     <section class="project-section">
-      <h2>Component Selection</h2>
+      <h2>Component selection</h2>
       <p>
         The target was continuous conduction at the full 3 A load, meaning inductor current never
         falls to zero during the switching cycle. Discontinuous operation is not dangerous, but it
@@ -138,12 +144,13 @@
         efficiency across the load range against the 91.3% the model predicts.
       </p>
     </section>
-
+    </div>
   </main>
 
   <footer>
-    <p>Ethan Greenhouse · <a href="mailto:greenhouse.e@northeastern.edu">greenhouse.e@northeastern.edu</a></p>
+    <p class="meta-row"><span>Ethan Greenhouse</span><a href="mailto:greenhouse.e@northeastern.edu">greenhouse.e@northeastern.edu</a></p>
   </footer>
 
+  <script src="../page.js" defer></script>
 </body>
 </html>
