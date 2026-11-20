@@ -57,62 +57,43 @@
     <section class="project-section">
       <h2>Overview</h2>
       <p>
-        During my 6 months as a Quality Engineer at AvtechTyee, an aerospace manufacturer, I worked on two
-        projects. The first replaced manual incoming inspection of circuit board assemblies with an
-        automated machine vision system. The second was a model that predicts which suppliers are
-        most likely to cause quality problems, built on 7 years of historical data.
+        Six months as a Quality Engineer at AvtechTyee, an aerospace manufacturer, on two projects: replacing manual incoming inspection of circuit board assemblies with machine vision, and building a model that predicts which suppliers are most likely to cause quality problems.
       </p>
     </section>
 
     <section class="project-section">
       <h2>Machine vision inspection</h2>
       <p>
-        Incoming inspection of circuit board assemblies was manual. An inspector compared each board
-        against documentation by eye, which is slow and depends on who is working that day. A board
-        that passes inspection while carrying a defect is far more expensive to find later in the
-        build, so the cost of a miss is high.
+        Incoming inspection was manual. An inspector compared each board against documentation by eye, which is slow and depends on who is working that day, and a board that passes while carrying a defect is far more expensive to find later in the build.
       </p>
       <p>
-        I set up a Keyence VS-series vision system to do the comparison automatically. The camera
-        mounts on an adjustable arm over a fixed inspection stage, so board position and lighting stay
-        consistent between units. Each board type gets a program that captures reference images and
-        compares incoming units against it.
-      </p>
-      <p>
-        Differences show up as a heat map over the board. A unit that matches the reference passes.
-        A unit with a defect such as missing component, backwards component, or foreign material appears as a region
-        of disagreement, and the operator sees the location rather than just a pass or fail result.
+        I set up a Keyence VS-series system to do the comparison automatically. The camera mounts on an adjustable arm over a fixed stage so board position and lighting stay consistent between units, and each board type gets a program that captures reference images and compares incoming units against them. Differences show up as a heat map, so for a missing component, a backwards component, or foreign material the operator sees the location rather than just a pass or fail.
       </p>
       <div class="project-img project-img-auto">
         <a href="../images/coop-vision-heatmap.jpg" target="_blank">
           <img src="../images/coop-vision-heatmap.jpg" alt="Side by side inspection results: a passing board outlined in green, and a failing board outlined in red with a heat map marking the region that differs from the reference" />
         </a>
       </div>
-      <p>
-        I programmed the system for 25+ board types, wrote two Oracle Agile PLM work instructions
-        covering programming and operation, and trained five quality inspectors to run and extend
-        it themselves. The vision system replaced manual incoming inspection, saving
-        an estimated $100K per year in scrap, labor, and defect cost.
-      </p>
+      <table class="spec">
+        <thead>
+          <tr><th>Delivered</th><th>Detail</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Board types programmed</td><td class="num">25+</td></tr>
+          <tr><td>Work instructions written</td><td>Two in Oracle Agile PLM, covering programming and operation</td></tr>
+          <tr><td>Inspectors trained</td><td>Five, to run and extend the system themselves</td></tr>
+          <tr><td>Estimated saving</td><td class="num">$100K per year</td></tr>
+        </tbody>
+      </table>
     </section>
 
     <section class="project-section">
       <h2>Supplier risk model</h2>
       <p>
-        The second project was predicting supplier quality problems before they turned into
-        nonconformance reports, using seven years of history at supplier-month granularity.
+        Predicting supplier quality problems before they turn into nonconformance reports, using seven years of history at supplier-month granularity.
       </p>
       <p>
-        The hard part was defining the target. "This supplier is getting worse" is easy to say and
-        difficult to write down. I settled on a trend label: a supplier is positive for a given month
-        if their nonconformance rate over the next three months is at least 1.5 times their rate over
-        the previous three.
-      </p>
-      <p>
-        That definition on its own produced a lot of noise. A supplier with zero reports in the past
-        three months and one in the next three is mathematically a large increase but operationally
-        close to nothing at all. Requiring a minimum count in the forward window removed most of those false
-        positives.
+        The hard part was defining the target. "This supplier is getting worse" is easy to say and difficult to write down. I settled on a trend label: a supplier is positive for a given month if their nonconformance rate over the next three months is at least 1.5 times their rate over the previous three. That alone produced a lot of noise, since a supplier with zero reports in the past three months and one in the next is mathematically a large increase and operationally nothing. Requiring a minimum count in the forward window removed most of those.
       </p>
 <pre><code># "Trend up" means future_avg &gt;= multiple * past_avg.
 label_window: int = 3
@@ -123,17 +104,19 @@ trend_multiple: float = 1.5
 # the past 3 months and then 1 in the next 3 (mathematically a positive
 # trend but operationally just normal variation).
 min_future_sum: int = 2</code></pre>
+      <table class="spec">
+        <thead>
+          <tr><th>Choice</th><th>Detail</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Classifier</td><td>Histogram gradient boosting, with logistic regression kept alongside as a baseline through the same preprocessing</td></tr>
+          <tr><td>Calibration</td><td>Isotonic. With roughly ten positives per fold, sigmoid compressed nearly every prediction toward the base rate; isotonic gave a better Brier score and a wider spread</td></tr>
+          <tr><td>Validation</td><td>Walk-forward backtest. A random split would let the model train on later months and score earlier ones</td></tr>
+          <tr><td>Result</td><td>The top 5% by predicted risk failed 1.6 times more often than a random selection of the same size</td></tr>
+        </tbody>
+      </table>
       <p>
-        The classifier is a histogram gradient boosting model, with a logistic regression kept
-        alongside it as a simpler baseline to measure against. Both run through the same
-        preprocessing pipeline. Predictions are calibrated so the output reads as an actual
-        probability rather than only a ranking, which matters because the threshold is a business
-        decision about how many suppliers the team can review.
-      </p>
-      <p>
-        I tested both calibration methods. With roughly ten positives per fold, sigmoid calibration
-        compressed nearly every prediction toward the base rate. Isotonic gave a slightly better
-        Brier score and a wider spread, which is what makes threshold tuning possible at all.
+        Predictions are calibrated so the output reads as a probability rather than only a ranking, which matters because the threshold is a business decision about how many suppliers the team can review.
       </p>
 <pre><code>hgb = CalibratedClassifierCV(
     estimator=hgb_inner,
@@ -141,21 +124,10 @@ min_future_sum: int = 2</code></pre>
     cv=n_folds,
 )</code></pre>
       <p>
-        Validation is a walk-forward backtest rather than a random split. A random split would let
-        the model train on later months and score earlier ones, which inflates the result and would
-        not survive contact with real use.
-      </p>
-      <p>
-        The top 5% of suppliers by predicted risk failed 1.6 times more often than a random
-        selection of the same size. I delivered it as a desktop tool with an Excel dashboard while complying with IT policies
-        so the quality team could run it monthly without touching Python.
-        It is now used in monthly reviews covering 150+ suppliers.
-      </p>
-      <p>
-        Source is on GitHub at
-        <a href="https://github.com/EthanGreenhouse/supplier-risk-model" target="_blank">supplier-risk-model</a>.
+        Delivered as a desktop tool with an Excel dashboard, within IT policy, so the quality team can run it monthly without touching Python. It is now used in monthly reviews covering 150+ suppliers. Source is on GitHub at <a href="https://github.com/EthanGreenhouse/supplier-risk-model" target="_blank">supplier-risk-model</a>.
       </p>
     </section>
+
     </div>
   </main>
 

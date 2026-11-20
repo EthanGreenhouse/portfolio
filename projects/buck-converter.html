@@ -57,93 +57,67 @@
     <section class="project-section">
       <h2>Overview</h2>
       <p>
-        A 78 × 16 mm two-layer board that takes 12 V in on a barrel jack and puts out 5 V on a USB-A
-        socket at up to 3 A. It works as a bench or car USB supply, and it was my first switching
-        regulator. The goal was to size a converter from the datasheet rather than buy a finished
-        module.
+        A 78 × 16 mm two-layer board taking 12 V in on a barrel jack to 5 V out on a USB-A socket at up to 3 A. My first switching regulator, sized from the datasheet rather than bought as a module.
       </p>
       <p>
-        The regulator is an LM2596S-5, a fixed 5 V step-down in TO-263 switching at 150 kHz and rated
-        for 3 A. It is an asynchronous design, meaning a Schottky catch diode carries the freewheel
-        current rather than a second switching FET. That costs efficiency but removes the need for a
-        gate driver and a bootstrap supply.
-      </p>
-    </section>
-
-    <section class="project-section">
-      <h2>Why a switching regulator</h2>
-      <p>
-        A linear regulator doing 12 V to 5 V at 3 A dissipates (12 - 5) × 3 = 21 W in the package.
-        That is not coolable on a board this size and caps efficiency near 42%. A buck converter
-        stores that energy in an inductor and delivers it to the load instead. Simulation puts this
-        design at 91.3%.
-      </p>
-      <p>
-        The tradeoff is that a switcher is a layout problem as much as a schematic problem. Every
-        choice below is about either keeping inductor current continuous or keeping the high current
-        loops short.
+        A linear regulator doing the same job dissipates (12 - 5) × 3 = 21 W in the package, which is not coolable on a board this size and caps efficiency near 42%. The LM2596S-5 is a fixed 5 V step-down in TO-263 switching at 150 kHz. It is asynchronous, so a Schottky catch diode carries the freewheel current instead of a second FET: that costs efficiency but removes the gate driver and bootstrap supply.
       </p>
     </section>
 
     <section class="project-section">
       <h2>Component selection</h2>
       <p>
-        The target was continuous conduction at the full 3 A load, meaning inductor current never
-        falls to zero during the switching cycle. Discontinuous operation is not dangerous, but it
-        makes output voltage load dependent and worsens ripple.
+        The target was continuous conduction at the full 3 A load, meaning inductor current never falls to zero during the switching cycle. Discontinuous operation is not dangerous, but it makes output voltage load dependent and worsens ripple.
       </p>
-      <ul>
-        <li><strong>L1, 33 µH.</strong> Sized from the LM2596 datasheet selection curves for a 12 V input at 3 A. The inductor sets ripple current, which is what determines whether conduction stays continuous.</li>
-        <li><strong>C1, 680 µF input.</strong> A buck draws input current in pulses rather than smoothly. The input capacitor supplies those pulses locally instead of pulling them down the supply leads, which helps both ripple and EMI.</li>
-        <li><strong>C2, 220 µF output.</strong> Absorbs inductor ripple current to flatten the 5 V rail, and sets transient response under a load step.</li>
-        <li><strong>D1, SS54 Schottky, 40 V and 5 A.</strong> The catch diode carries inductor current during the switch off half of the cycle. Schottky for the lower forward drop and fast recovery, with ratings above the 12 V input and 3 A load to cover switching transients.</li>
-      </ul>
+      <table class="spec">
+        <thead>
+          <tr><th>Part</th><th>Value</th><th>Why</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>L1 inductor</td><td class="num">33 µH</td><td>From the LM2596 selection curves for 12 V in at 3 A. Sets ripple current, which decides whether conduction stays continuous.</td></tr>
+          <tr><td>C1 input</td><td class="num">680 µF</td><td>A buck draws input current in pulses. Supplying them locally keeps them off the supply leads, which helps ripple and EMI.</td></tr>
+          <tr><td>C2 output</td><td class="num">220 µF</td><td>Absorbs inductor ripple current to flatten the rail, and sets transient response under a load step.</td></tr>
+          <tr><td>D1 catch diode</td><td>SS54 Schottky, 40 V, 5 A</td><td>Carries inductor current during switch off. Schottky for low forward drop and fast recovery, rated above the 12 V input and 3 A load to cover transients.</td></tr>
+        </tbody>
+      </table>
     </section>
 
     <section class="project-section">
       <h2>Layout</h2>
       <p>
-        Input, switch node, and output traces are widened to 0.8 mm to carry 3 A without meaningful
-        drop or heating. The switch node matters most for noise, since it joins the regulator output
-        pin, the inductor, and the catch diode while swinging the full input voltage at 150 kHz.
-        Kept short it behaves like a trace, and left to sprawl it behaves like an antenna.
-      </p>
-      <p>
-        The 78 × 16 mm outline is long and narrow so the barrel jack and USB-A socket sit at opposite
-        ends, giving a straight through power path with the switching section in the middle.
+        Input, switch node, and output traces are widened to 0.8 mm to carry 3 A without meaningful drop or heating. The switch node matters most: it joins the regulator output pin, the inductor, and the catch diode while swinging the full input voltage at 150 kHz. Kept short it behaves like a trace, left to sprawl it behaves like an antenna. The long, narrow outline puts the barrel jack and USB-A socket at opposite ends, giving a straight through power path with the switching section in the middle.
       </p>
     </section>
 
     <section class="project-section">
       <h2>Simulation</h2>
       <p>
-        I modelled the converter in LTspice as an open-loop, fixed-duty stage: an ideal high side
-        switch, the SS54 as the freewheel diode, and the real parasitics that matter, 50 mΩ of
-        inductor series resistance and 50 mΩ of output capacitor ESR. Measurements are averaged over
-        the last millisecond of a 5 ms transient, once the output has settled.
+        Modelled in LTspice as an open-loop, fixed-duty stage: an ideal high side switch, the SS54 as freewheel diode, and the parasitics that matter, 50 mΩ of inductor series resistance and 50 mΩ of output capacitor ESR. Figures are averaged over the last millisecond of a 5 ms transient, once the output has settled.
       </p>
-      <ul>
-        <li><strong>91.3% efficiency</strong> at the full 3 A load. 16.64 W in, 15.19 W out.</li>
-        <li><strong>The catch diode is 62% of the total loss</strong>, 0.90 W of 1.45 W. That is the price of an asynchronous design, and it is the first thing a synchronous FET would recover.</li>
-        <li><strong>Inductor loss is 0.46 W</strong>, another 32%, which leaves only about 6% in the switch and capacitor ESR combined.</li>
-        <li><strong>Inductor current never reaches zero.</strong> Ripple is 0.63 A peak to peak with a minimum of 2.71 A, so conduction stays continuous at full load, which is what the 33 µH was sized for.</li>
-        <li><strong>Output ripple is 31 mV</strong> on a 5.03 V rail.</li>
-      </ul>
+      <table class="spec">
+        <thead>
+          <tr><th>Result</th><th>Value</th><th>Detail</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Efficiency at 3 A</td><td class="num">91.3%</td><td>16.64 W in, 15.19 W out</td></tr>
+          <tr><td>Catch diode loss</td><td class="num">0.90 W</td><td>62% of the 1.45 W total, and the first thing a synchronous FET would recover</td></tr>
+          <tr><td>Inductor loss</td><td class="num">0.46 W</td><td>another 32%, leaving about 6% in the switch and capacitor ESR combined</td></tr>
+          <tr><td>Inductor ripple</td><td class="num">0.63 A</td><td>peak to peak, minimum 2.71 A, so conduction stays continuous at full load</td></tr>
+          <tr><td>Output ripple</td><td class="num">31 mV</td><td>on a 5.03 V rail</td></tr>
+        </tbody>
+      </table>
       <p>
-        The loss breakdown is the useful part. Knowing the diode dominates tells you where a Rev B
-        would go, and it is a better answer than assuming the regulator itself is the problem.
+        The loss breakdown is the useful part. Knowing the diode dominates tells you where a Rev B would go, and it is a better answer than assuming the regulator itself is the problem.
       </p>
     </section>
 
     <section class="project-section">
       <h2>Status</h2>
       <p>
-        The schematic and layout are complete in KiCad and the design is simulated. The board has not
-        been fabricated, so the figures above are simulated rather than measured. Once built, the
-        things worth putting on a scope are the switch node waveform, output ripple at full load, and
-        efficiency across the load range against the 91.3% the model predicts.
+        Schematic and layout complete in KiCad, design simulated, board not fabricated, so every figure above is simulated rather than measured. Once built, the things worth putting on a scope are the switch node waveform, output ripple at full load, and efficiency across the load range against the 91.3% the model predicts.
       </p>
     </section>
+
     </div>
   </main>
 
