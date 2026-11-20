@@ -299,6 +299,27 @@ body > nav ul a:hover {
   transform: translateY(-3px);
 }
 
+.experience-card + .experience-card {
+  margin-top: 1rem;
+}
+
+/* Not started yet, so there is no page to link to and nothing to lift on
+   hover. The dashed edge marks it as pending rather than part of the record. */
+.experience-card--upcoming {
+  border-left-style: dashed;
+  border-left-color: var(--border);
+}
+
+.experience-card--upcoming:hover {
+  border-color: var(--border);
+  transform: none;
+}
+
+/* No body copy on a placeholder, so the meta row is the last thing in it. */
+.experience-card--upcoming .experience-meta {
+  margin-bottom: 0;
+}
+
 .experience-role {
   font-size: var(--fs-md);
   font-weight: 600;
